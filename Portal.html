@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RealSource App Portal</title>
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Load Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        /* Apply the Inter font globally */
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        /* Custom scrollbar for a cleaner look */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background-color: #94a3b8; /* Slate 400 */
+            border-radius: 4px;
+        }
+    </style>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'primary-blue': '#0078D4',
+                        'dark-text': '#1f2937',
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-50 min-h-screen p-4 sm:p-8">
+
+    <!-- Header Section -->
+    <header class="max-w-4xl mx-auto mb-10 text-center">
+        <h1 class="text-4xl font-extrabold text-dark-text tracking-tight mt-6 mb-2">
+            RealSource Application Hub
+        </h1>
+        <p class="text-lg text-gray-500">
+            Quickly access your tools and resources.
+        </p>
+    </header>
+
+    <!-- Application Grid -->
+    <div class="max-w-5xl mx-auto grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6" id="appGrid">
+        <!-- Tiles will be inserted here by JavaScript -->
+    </div>
+
+    <!-- Modal for Instructions/Disabled Apps (Uses Tailwind CSS for styling) -->
+    <div id="modal" class="fixed inset-0 bg-gray-900 bg-opacity-70 flex items-center justify-center p-4 z-50 hidden transition-opacity duration-300 ease-out opacity-0" onclick="closeModal(event)">
+        <div class="bg-white rounded-xl shadow-2xl w-full max-w-lg p-6 md:p-8 transform transition-transform duration-300 ease-out scale-95" id="modalContent">
+            <div class="flex justify-between items-start mb-4">
+                <h2 id="modalTitle" class="text-2xl font-bold text-dark-text"></h2>
+                <button onclick="closeModal()" class="text-gray-400 hover:text-gray-600 transition">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+            
+            <!-- Instruction Box: Dynamically styled based on app status -->
+            <div id="instructionBox" class="p-4 rounded-lg mb-6">
+                <p id="modalInstructions" class="text-base"></p>
+            </div>
+            
+            <a id="modalLink" class="w-full inline-flex justify-center items-center px-6 py-3 border border-transparent text-base font-medium rounded-lg text-white bg-primary-blue hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-blue transition-all duration-150 ease-in-out" target="_blank">
+                Continue to Application
+            </a>
+            <button id="modalCloseBtn" onclick="closeModal()" class="w-full mt-3 px-6 py-3 text-base font-medium rounded-lg text-gray-700 bg-gray-100 hover:bg-gray-200 focus:outline-none transition-all duration-150 ease-in-out">
+                Understood / Close
+            </button>
+        </div>
+    </div>
+
+    <script>
+        const apps = [
+            // Application list based on info.txt, with Outlook/Teams retained as requested previously.
+            { name: "Inflection HR", icon: "fa-solid fa-clock", link: "https://secure.yourpayrollhr.com/ta/IHR0762.login", instructions: "Log in using your **Alias and password** (Check email for initial password after SSO phase out)" },
+            { name: "Entrata", icon: "fa-solid fa-building", link: "https://realsourcemgmt.entrata.com/", instructions: "Log in using your **Alias and password** (Use \"Reset Password\" to get a new password after SSO phase out)" },
+            { name: "EliseAI", icon: "fa-solid fa-robot", link: "https://realsourcemgmt.entrata.com/", instructions: "Log in using your **Alias and password** (Use \"Reset Password\" to get a new password after SSO phase out)" },
+            { name: "Motivosity", icon: "fa-solid fa-gift", link: "https://www.motivosity.com/", instructions: "Enter **Alias Email (Alias@realsource.net)** and Motivosity will send you a security code to log in." },
+            { name: "Concur Expense", icon: "fa-solid fa-credit-card", link: "https://www.concursolutions.com/", instructions: "Use **RealSource Email and Concur password** (Use Reset password after SSO Phase Out)" },
+            { name: "LRO", icon: "fa-solid fa-chart-line", link: "https://ao.realpage.com/ysconfig/app/login?authfailed=true", instructions: "Use **email and password** (Unchanged after SSO Phase Out)" },
+            { name: "DocuVeris", icon: "fa-solid fa-file-signature", link: "https://app.dvapply.com./ats/login", instructions: "Use **email and password**" },
+            { name: "Reputation", icon: "fa-solid fa-globe", link: "https://app.reputation.com/auth", instructions: "Use **email and password** (Unchanged after SSO Phase Out)" },
+            
+            // M365 Apps
+            { name: "Outlook", icon: "fa-solid fa-envelope", link: "https://outlook.microsoft.com", instructions: "To log in, use your **RealSource Outlook Email and Password**" },
+            { name: "Teams", icon: "fa-solid fa-comments", link: "https://teams.microsoft.com/v2/", instructions: "To log in, use your **RealSource Outlook Email and Password**" },
+            { name: "SharePoint", icon: "fa-brands fa-microsoft", link: "https://realsource451.sharepoint.com/", instructions: "To log in, use your **RealSource Outlook Email and Password**" },
+
+            // Support & Disabled
+            { name: "Support", icon: "fa-solid fa-headset", link: "https://realsource.freshdesk.com", instructions: "Enter a ticket on **Freshdesk** for all support requests." },
+            { name: "Coming Soon", icon: "fa-solid fa-file", link: "", instructions: "A document system for forms normally found in the RAP is **coming soon**.", disabled: true },
+            { name: "GraceHill", icon: "fa-solid fa-book", link: "", instructions: "**Discontinued** after SSO Phase Out - Employees will no longer need to log into this system", disabled: true },
+        ];
+
+        const grid = document.getElementById("appGrid");
+        const modal = document.getElementById("modal");
+        const modalTitle = document.getElementById("modalTitle");
+        const modalInstructions = document.getElementById("modalInstructions");
+        const modalLink = document.getElementById("modalLink");
+        const modalCloseBtn = document.getElementById("modalCloseBtn");
+        const instructionBox = document.getElementById("instructionBox");
+        
+        // --- Modal Control Functions ---
+        function openModal() {
+            modal.classList.remove('hidden', 'opacity-0');
+            modal.classList.add('flex', 'opacity-100');
+        }
+
+        function closeModal(event) {
+            // Prevent closing if clicking inside the modal content
+            if (event && event.target.id === 'modalContent') return;
+            if (event && event.target.closest('#modalContent')) return;
+            
+            modal.classList.remove('flex', 'opacity-100');
+            modal.classList.add('hidden', 'opacity-0');
+        }
+
+        // --- Tile Generation and Event Handling ---
+        apps.forEach(app => {
+            const tile = document.createElement("a");
+            
+            // Tile Classes and Hover effects
+            const tileClasses = app.disabled ? 
+                               "opacity-50 cursor-not-allowed bg-gray-100 hover:bg-gray-100 hover:transform-none" : 
+                               "group hover:-translate-y-1 hover:bg-blue-50";
+
+            // Set base classes (Tailwind for aesthetics)
+            tile.className = `p-6 flex flex-col items-center justify-center bg-white rounded-xl shadow-md transition-all duration-300 ease-in-out cursor-pointer hover:shadow-lg ${tileClasses}`;
+            
+            tile.href = "#"; // All clicks go to modal
+            
+            // Tile Icon and Name
+            tile.innerHTML = `
+                <i class="${app.icon} text-4xl text-primary-blue mb-4 transition-all duration-300 group-hover:text-blue-600"></i>
+                <h3 class="text-lg font-semibold text-dark-text text-center transition-all duration-300 group-hover:text-blue-800">${app.name}</h3>
+            `;
+            
+            // Add tooltip preview for enabled apps
+            if (!app.disabled) {
+                tile.title = app.instructions.replace(/\*\*/g, ''); 
+            }
+
+            // Set click handler to always open modal
+            tile.onclick = (e) => {
+                e.preventDefault();
+                
+                // Populate modal content
+                modalTitle.innerHTML = app.name;
+                // Replace markdown bolding for instructions
+                modalInstructions.innerHTML = app.instructions.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>'); 
+
+                // Clear previous instruction box classes
+                instructionBox.className = 'p-4 rounded-lg mb-6';
+                modalInstructions.className = 'text-base';
+
+                if (app.disabled || !app.link) {
+                    // Disabled App/Coming Soon/No Link (RED style, hide Continue button)
+                    modalLink.classList.add('hidden');
+                    modalCloseBtn.textContent = "Understood / Close";
+                    
+                    instructionBox.classList.add('bg-red-50', 'border-l-4', 'border-red-500');
+                    modalInstructions.classList.add('text-red-900');
+                } else {
+                    // All working apps (YELLOW style, show Continue button)
+                    modalLink.classList.remove('hidden');
+                    modalLink.textContent = "Continue to Application";
+                    modalLink.href = app.link;
+                    modalLink.target = "_blank";
+                    modalCloseBtn.textContent = "Not now";
+
+                    instructionBox.classList.add('bg-yellow-50', 'border-l-4', 'border-yellow-500');
+                    modalInstructions.classList.add('text-yellow-900');
+                }
+                
+                openModal();
+            };
+            
+            grid.appendChild(tile);
+        });
+        
+    </script>
+
+</body>
+</html>
+
