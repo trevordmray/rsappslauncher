@@ -270,23 +270,14 @@
                 themeToggleText.textContent = isDark ? 'Toggle Light Mode' : 'Toggle Dark Mode';
             };
             
-            const applyTheme = (isDark, manual = false) => {
+            const applyTheme = (isDark) => {
                 root.classList.toggle('dark', isDark);
-                if (manual) {
-                    localStorage.setItem('color-theme', isDark ? 'dark' : 'light');
-                }
                 updateThemeUI(isDark);
             };
 
             const initializeTheme = () => {
-                const savedTheme = localStorage.getItem('color-theme');
                 const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-                
-                if (savedTheme) {
-                    applyTheme(savedTheme === 'dark', true);
-                } else {
-                    applyTheme(prefersDark);
-                }
+                applyTheme(prefersDark);
             };
 
             // --- App Tile Rendering ---
@@ -313,7 +304,7 @@
             const setupEventListeners = () => {
                 // Theme toggle
                 themeToggleBtn.addEventListener('click', () => {
-                    applyTheme(!root.classList.contains('dark'), true);
+                    applyTheme(!root.classList.contains('dark'));
                 });
 
                 // Credits button
@@ -348,10 +339,8 @@
 
                 // Listen for OS theme changes
                 window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
-                    // Only update if no theme is manually set in localStorage
-                    if (!localStorage.getItem('color-theme')) {
-                        applyTheme(event.matches);
-                    }
+                    // Always update based on OS theme changes.
+                    applyTheme(event.matches);
                 });
             };
 
