@@ -63,7 +63,19 @@
         <!-- Tiles will be inserted here by JavaScript -->
     </div>
 
-    <!-- Modal for Instructions/Disabled Apps (Uses Tailwind CSS for styling) -->
+    <!-- Security Disclaimer Footer -->
+    <footer class="max-w-4xl mx-auto mt-12 text-center pb-16">
+        <p class="text-xs text-gray-400 leading-relaxed">
+            This portal and its contents are the exclusive property of RealSource Properties and are intended for authorized employees only. Unauthorized access, use, or distribution of any information contained within this system is strictly prohibited and may result in legal action. By proceeding, you acknowledge and agree to abide by all company policies regarding the use of internal systems and confidential data. If you are not an authorized user, you must exit this portal immediately.
+        </p>
+    </footer>
+
+    <!-- Credits Button -->
+    <button onclick="openCreditsModal()" class="fixed bottom-6 right-6 bg-white p-2 rounded-full shadow-lg hover:bg-gray-100 transition focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-blue">
+        <i class="fas fa-info-circle text-gray-500 text-2xl"></i>
+    </button>
+
+    <!-- App Instructions Modal -->
     <div id="modal" class="fixed inset-0 bg-gray-900 bg-opacity-70 flex items-center justify-center p-4 z-50 hidden transition-opacity duration-300 ease-out opacity-0" onclick="closeModal(event)">
         <div class="bg-white rounded-xl shadow-2xl w-full max-w-lg p-6 md:p-8 transform transition-transform duration-300 ease-out scale-95" id="modalContent">
             <div class="flex justify-between items-start mb-4">
@@ -72,18 +84,31 @@
                     <i class="fas fa-times text-xl"></i>
                 </button>
             </div>
-            
-            <!-- Instruction Box: Dynamically styled based on app status -->
             <div id="instructionBox" class="p-4 rounded-lg mb-6">
                 <p id="modalInstructions" class="text-base"></p>
             </div>
-            
-            <a id="modalLink" class="w-full inline-flex justify-center items-center px-6 py-3 border border-transparent text-base font-medium rounded-lg text-white bg-primary-blue hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-blue transition-all duration-150 ease-in-out" target="_blank">
-                Continue to Application
-            </a>
-            <button id="modalCloseBtn" onclick="closeModal()" class="w-full mt-3 px-6 py-3 text-base font-medium rounded-lg text-gray-700 bg-gray-100 hover:bg-gray-200 focus:outline-none transition-all duration-150 ease-in-out">
-                Understood / Close
-            </button>
+            <a id="modalLink" class="w-full inline-flex justify-center items-center px-6 py-3 border border-transparent text-base font-medium rounded-lg text-white bg-primary-blue hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-blue transition-all duration-150 ease-in-out" target="_blank">Continue to Application</a>
+            <button id="modalCloseBtn" onclick="closeModal()" class="w-full mt-3 px-6 py-3 text-base font-medium rounded-lg text-gray-700 bg-gray-100 hover:bg-gray-200 focus:outline-none transition-all duration-150 ease-in-out">Understood / Close</button>
+        </div>
+    </div>
+
+    <!-- Credits Modal -->
+    <div id="creditsModal" class="fixed inset-0 bg-gray-900 bg-opacity-70 flex items-center justify-center p-4 z-50 hidden transition-opacity duration-300 ease-out opacity-0" onclick="closeCreditsModal(event)">
+        <div class="bg-white rounded-xl shadow-2xl w-full max-w-lg p-6 md:p-8 transform transition-transform duration-300 ease-out scale-95" id="creditsModalContent">
+            <div class="flex justify-between items-start mb-4">
+                <h2 class="text-2xl font-bold text-dark-text">Credits & Acknowledgements</h2>
+                <button onclick="closeCreditsModal()" class="text-gray-400 hover:text-gray-600 transition">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+            <p class="text-base text-gray-700 mb-6">Portal created and designed by <strong>Trevor Ray</strong> for <strong>RealSource Properties</strong>.</p>
+            <h3 class="text-lg font-semibold text-dark-text mb-3">Open Source Acknowledgements:</h3>
+            <ul class="list-disc list-inside text-gray-600 space-y-2">
+                <li><strong>Tailwind CSS:</strong> A utility-first CSS framework for rapid UI development.</li>
+                <li><strong>Font Awesome:</strong> The web's most popular icon set and toolkit.</li>
+                <li><strong>Google Fonts (Lexend & Inter):</strong> High-quality, open-source fonts for the web.</li>
+            </ul>
+            <button onclick="closeCreditsModal()" class="w-full mt-8 px-6 py-3 text-base font-medium rounded-lg text-gray-700 bg-gray-100 hover:bg-gray-200 focus:outline-none transition-all duration-150 ease-in-out">Close</button>
         </div>
     </div>
 
@@ -99,12 +124,8 @@
             { name: "LRO", icon: "fa-solid fa-chart-line", link: "https://ao.realpage.com/ysconfig/app/login?authfailed=true", instructions: "Use **email and password** (Unchanged after SSO Phase Out)" },
             { name: "DocuVerus", icon: "fa-solid fa-file-signature", link: "https://app.dvapply.com./ats/login", instructions: "Use **email and password** (Unchanged after SSO Phase Out)" },
             { name: "Reputation", icon: "fa-solid fa-globe", link: "https://app.reputation.com/auth", instructions: "Use **email and password** (Unchanged after SSO Phase Out)" },
-
-            // Previously added M365 apps (Outlook/Teams) using SharePoint's instruction style
             { name: "Outlook", icon: "fa-solid fa-envelope", link: "https://outlook.microsoft.com", instructions: "To log in, use your **RealSource Outlook Email and Password**" },
             { name: "Teams", icon: "fa-solid fa-comments", link: "https://teams.microsoft.com/v2/", instructions: "To log in, use your **RealSource Outlook Email and Password**" },
-            
-            // Support & Disabled
             { name: "Support", icon: "fa-solid fa-headset", link: "https://realsource.freshdesk.com", instructions: "Enter a ticket on **Freshdesk** for all support requests." },
             { name: "theRAP Forms", icon: "fa-solid fa-file", link: "https://realsource451.sharepoint.com/:f:/g/EtThzHeloH9Hqwl6ik0A3OUB9KBc0hBGIPicJ3Vrf-fyEg?e=TYFeyq", instructions: "Forms normally found in theRAP have been moved to SharePoint. If you are unable to find a form you need, please submit an IT ticket" },
             { name: "GraceHill", icon: "fa-solid fa-book", link: "", instructions: "**Discontinued** after SSO Phase Out - Employees will no longer need to log into this system", disabled: true },
@@ -112,91 +133,71 @@
 
         const grid = document.getElementById("appGrid");
         const modal = document.getElementById("modal");
+        const creditsModal = document.getElementById("creditsModal");
         const modalTitle = document.getElementById("modalTitle");
         const modalInstructions = document.getElementById("modalInstructions");
         const modalLink = document.getElementById("modalLink");
         const modalCloseBtn = document.getElementById("modalCloseBtn");
         const instructionBox = document.getElementById("instructionBox");
         
-        // --- Modal Control Functions ---
         function openModal() {
             modal.classList.remove('hidden', 'opacity-0');
             modal.classList.add('flex', 'opacity-100');
         }
 
         function closeModal(event) {
-            // Prevent closing if clicking inside the modal content
-            if (event && event.target.id === 'modalContent') return;
             if (event && event.target.closest('#modalContent')) return;
-            
             modal.classList.remove('flex', 'opacity-100');
             modal.classList.add('hidden', 'opacity-0');
         }
 
-        // --- Tile Generation and Event Handling ---
+        function openCreditsModal() {
+            creditsModal.classList.remove('hidden', 'opacity-0');
+            creditsModal.classList.add('flex', 'opacity-100');
+        }
+
+        function closeCreditsModal(event) {
+            if (event && event.target.closest('#creditsModalContent')) return;
+            creditsModal.classList.remove('flex', 'opacity-100');
+            creditsModal.classList.add('hidden', 'opacity-0');
+        }
+
         apps.forEach(app => {
             const tile = document.createElement("a");
-            
-            // Tile Classes and Hover effects
-            const tileClasses = app.disabled ? 
-                               "opacity-50 cursor-not-allowed bg-gray-100 hover:bg-gray-100 hover:transform-none" : 
-                               "group hover:-translate-y-1 hover:bg-blue-50";
-
-            // Set base classes (Tailwind for aesthetics)
+            const tileClasses = app.disabled ? "opacity-50 cursor-not-allowed bg-gray-100 hover:bg-gray-100 hover:transform-none" : "group hover:-translate-y-1 hover:bg-blue-50";
             tile.className = `p-6 flex flex-col items-center justify-center bg-white rounded-xl shadow-md transition-all duration-300 ease-in-out cursor-pointer hover:shadow-lg ${tileClasses}`;
+            tile.href = "#";
+            tile.innerHTML = `<i class="${app.icon} text-4xl text-primary-blue mb-4 transition-all duration-300 group-hover:text-blue-600"></i><h3 class="text-lg font-semibold text-dark-text text-center transition-all duration-300 group-hover:text-blue-800">${app.name}</h3>`;
             
-            tile.href = "#"; // All clicks go to modal
-            
-            // Tile Icon and Name
-            tile.innerHTML = `
-                <i class="${app.icon} text-4xl text-primary-blue mb-4 transition-all duration-300 group-hover:text-blue-600"></i>
-                <h3 class="text-lg font-semibold text-dark-text text-center transition-all duration-300 group-hover:text-blue-800">${app.name}</h3>
-            `;
-            
-            // Add tooltip preview for enabled apps
             if (!app.disabled) {
-                // Remove HTML breaks for a clean tooltip
-                tile.title = app.instructions.replace(/\*\*/g, '').replace(/<br>/g, ' '); 
+                tile.title = app.instructions.replace(/\*\*/g, '').replace(/<br>/g, ' ');
             }
 
-            // Set click handler to always open modal
             tile.onclick = (e) => {
                 e.preventDefault();
-                
-                // Populate modal content
                 modalTitle.innerHTML = app.name;
-                // Replace markdown bolding for instructions
-                modalInstructions.innerHTML = app.instructions.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>'); 
-
-                // Clear previous instruction box classes
+                modalInstructions.innerHTML = app.instructions.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
                 instructionBox.className = 'p-4 rounded-lg mb-6';
                 modalInstructions.className = 'text-base';
 
                 if (app.disabled || !app.link) {
-                    // Disabled App/Coming Soon/No Link (RED style, hide Continue button)
                     modalLink.classList.add('hidden');
                     modalCloseBtn.textContent = "Understood / Close";
-                    
                     instructionBox.classList.add('bg-red-50', 'border-l-4', 'border-red-500');
                     modalInstructions.classList.add('text-red-900');
                 } else {
-                    // All working apps (YELLOW style, show Continue button)
                     modalLink.classList.remove('hidden');
                     modalLink.textContent = "Continue to Application";
                     modalLink.href = app.link;
                     modalLink.target = "_blank";
                     modalCloseBtn.textContent = "Not now";
-
                     instructionBox.classList.add('bg-yellow-50', 'border-l-4', 'border-yellow-500');
                     modalInstructions.classList.add('text-yellow-900');
                 }
-                
                 openModal();
             };
-            
             grid.appendChild(tile);
         });
-        
     </script>
 
 </body>
