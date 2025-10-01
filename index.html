@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en">
+<!-- The `class` attribute is left empty so JavaScript can add 'dark' to it -->
+<html lang="en" class="">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -29,9 +30,15 @@
             background-color: #94a3b8; /* Slate 400 */
             border-radius: 4px;
         }
+        /* --- DARK MODE ---: New scrollbar style for dark mode */
+        .dark ::-webkit-scrollbar-thumb {
+            background-color: #475569; /* Slate 600 */
+        }
     </style>
     <script>
         tailwind.config = {
+            // --- DARK MODE ---: Enable Tailwind's class-based dark mode strategy
+            darkMode: 'class',
             theme: {
                 extend: {
                     colors: {
@@ -43,17 +50,21 @@
         }
     </script>
 </head>
-<body class="bg-gray-50 min-h-screen p-4 sm:p-8">
+<!-- --- DARK MODE ---: Added dark mode classes for background and text colors -->
+<body class="bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-gray-300 min-h-screen p-4 sm:p-8 transition-colors duration-300">
 
     <!-- Header Section -->
     <header class="max-w-4xl mx-auto mb-10 text-center">
         <!-- Company Logo -->
-        <img src="https://raw.githubusercontent.com/trevordmray/rsappslauncher/main/realsourcelogo.png" alt="RealSource Logo" class="mx-auto h-24 w-auto mb-4">
+        <!-- --- DARK MODE ---: Swapped logo based on theme -->
+        <img src="https://raw.githubusercontent.com/trevordmray/rsappslauncher/main/realsourcelogo.png" alt="RealSource Logo" class="mx-auto h-24 w-auto mb-4 block dark:hidden">
+        <img src="https://raw.githubusercontent.com/trevordmray/rsappslauncher/main/realsourcelogorev.png" alt="RealSource Logo" class="mx-auto h-24 w-auto mb-4 hidden dark:block">
         
         <h1 class="header-title text-4xl font-semibold bg-clip-text text-transparent bg-gradient-to-r from-primary-blue to-sky-500 mt-6 mb-2">
             Application Hub
         </h1>
-        <p class="text-lg text-gray-500">
+        <!-- --- DARK MODE ---: Added dark mode text color -->
+        <p class="text-lg text-gray-500 dark:text-gray-400">
             Quickly access your RealSource tools and resources.
         </p>
     </header>
@@ -65,43 +76,57 @@
 
     <!-- Security Disclaimer Footer -->
     <footer class="max-w-4xl mx-auto mt-12 text-center pb-16">
-        <p class="text-xs text-gray-400 leading-relaxed">
+         <!-- --- DARK MODE ---: Added dark mode text color -->
+        <p class="text-xs text-gray-400 dark:text-gray-500 leading-relaxed">
             This portal and its contents are the exclusive property of RealSource Properties and are intended for authorized employees only. Unauthorized access, use, or distribution of any information contained within this system is strictly prohibited and may result in legal action. By proceeding, you acknowledge and agree to abide by all company policies regarding the use of internal systems and confidential data. If you are not an authorized user, you must exit this portal immediately.
         </p>
     </footer>
 
+    <!-- --- DARK MODE ---: Updated Dark Mode Toggle Button -->
+    <button id="theme-toggle" type="button" class="fixed bottom-6 left-6 text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm px-4 py-2.5 shadow-lg transition flex items-center gap-x-2 font-medium">
+        <!-- Sun icon, represents Light Mode (current state) -->
+        <svg id="theme-toggle-light-icon" class="hidden w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm-.707 10.607a1 1 0 011.414 0l.707-.707a1 1 0 111.414 1.414l-.707.707a1 1 0 01-1.414 0zM2 11a1 1 0 100-2H1a1 1 0 100 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path></svg>
+        <!-- Moon icon, represents Dark Mode (current state) -->
+        <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+        <span id="theme-toggle-text"></span>
+    </button>
+
+
     <!-- Credits Button -->
-    <button onclick="openCreditsModal()" class="fixed bottom-6 right-6 bg-white p-2 rounded-full shadow-lg hover:bg-gray-100 transition focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-blue">
-        <i class="fas fa-info-circle text-gray-500 text-2xl"></i>
+    <!-- --- DARK MODE ---: Added dark mode classes for button -->
+    <button onclick="openCreditsModal()" class="fixed bottom-6 right-6 bg-white dark:bg-gray-800 p-2 rounded-full shadow-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-blue">
+        <i class="fas fa-info-circle text-gray-500 dark:text-gray-400 text-2xl"></i>
     </button>
 
     <!-- Welcome Modal -->
     <div id="welcomeModal" class="fixed inset-0 bg-gray-900 bg-opacity-70 flex items-center justify-center p-4 z-50 hidden transition-opacity duration-300 ease-out opacity-0">
-        <div class="bg-white rounded-xl shadow-2xl w-full max-w-lg p-6 md:p-8 transform transition-transform duration-300 ease-out scale-95">
+        <!-- --- DARK MODE ---: Added dark mode classes for modal content -->
+        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-2xl w-full max-w-lg p-6 md:p-8 transform transition-transform duration-300 ease-out scale-95">
             <div class="flex justify-between items-start mb-4">
-                <h2 class="text-2xl font-bold text-dark-text">Welcome! Important Changes</h2>
-                 <button onclick="closeWelcomeModal()" class="text-gray-400 hover:text-gray-600 transition">
+                <h2 class="text-2xl font-bold text-dark-text dark:text-white">Welcome! Important Changes</h2>
+                 <button onclick="closeWelcomeModal()" class="text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300 transition">
                     <i class="fas fa-times text-xl"></i>
                 </button>
             </div>
-            <p class="text-base text-gray-700 mb-6">
+            <p class="text-base text-gray-700 dark:text-gray-300 mb-6">
                 theRAP and Single Sign On (SSO) have been discontinued. You can read more about this change <a href="https://realsource451.sharepoint.com/:w:/g/EZGWxPx5pGVJqIhXIhDQvGQBEjbzLIbZvLmAdjn1O80qhw?e=KLxqXz" target="_blank" class="text-primary-blue font-semibold hover:underline">here</a>.
             </p>
             <div class="flex items-center mb-6">
-                <input id="dontShowAgain" type="checkbox" class="h-4 w-4 text-primary-blue focus:ring-primary-blue border-gray-300 rounded">
-                <label for="dontShowAgain" class="ml-2 block text-sm text-gray-900">Don't show this again for 24 hours</label>
+                <input id="dontShowAgain" type="checkbox" class="h-4 w-4 text-primary-blue focus:ring-primary-blue border-gray-300 dark:border-gray-600 rounded">
+                <label for="dontShowAgain" class="ml-2 block text-sm text-gray-900 dark:text-gray-300">Don't show this again for 24 hours</label>
             </div>
-            <button onclick="closeWelcomeModal()" class="w-full mt-3 px-6 py-3 text-base font-medium rounded-lg text-gray-700 bg-gray-100 hover:bg-gray-200 focus:outline-none transition-all duration-150 ease-in-out">Close</button>
+            <button onclick="closeWelcomeModal()" class="w-full mt-3 px-6 py-3 text-base font-medium rounded-lg text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 focus:outline-none transition-all duration-150 ease-in-out">Close</button>
         </div>
     </div>
 
 
     <!-- App Instructions Modal -->
     <div id="modal" class="fixed inset-0 bg-gray-900 bg-opacity-70 flex items-center justify-center p-4 z-50 hidden transition-opacity duration-300 ease-out opacity-0" onclick="closeModal(event)">
-        <div class="bg-white rounded-xl shadow-2xl w-full max-w-lg p-6 md:p-8 transform transition-transform duration-300 ease-out scale-95" id="modalContent">
+        <!-- --- DARK MODE ---: Added dark mode classes for modal content -->
+        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-2xl w-full max-w-lg p-6 md:p-8 transform transition-transform duration-300 ease-out scale-95" id="modalContent">
             <div class="flex justify-between items-start mb-4">
-                <h2 id="modalTitle" class="text-2xl font-bold text-dark-text"></h2>
-                <button onclick="closeModal()" class="text-gray-400 hover:text-gray-600 transition">
+                <h2 id="modalTitle" class="text-2xl font-bold text-dark-text dark:text-white"></h2>
+                <button onclick="closeModal()" class="text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300 transition">
                     <i class="fas fa-times text-xl"></i>
                 </button>
             </div>
@@ -109,27 +134,28 @@
                 <p id="modalInstructions" class="text-base"></p>
             </div>
             <a id="modalLink" class="w-full inline-flex justify-center items-center px-6 py-3 border border-transparent text-base font-medium rounded-lg text-white bg-primary-blue hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-blue transition-all duration-150 ease-in-out" target="_blank">Continue to Application</a>
-            <button id="modalCloseBtn" onclick="closeModal()" class="w-full mt-3 px-6 py-3 text-base font-medium rounded-lg text-gray-700 bg-gray-100 hover:bg-gray-200 focus:outline-none transition-all duration-150 ease-in-out">Understood / Close</button>
+            <button id="modalCloseBtn" onclick="closeModal()" class="w-full mt-3 px-6 py-3 text-base font-medium rounded-lg text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 focus:outline-none transition-all duration-150 ease-in-out">Understood / Close</button>
         </div>
     </div>
 
     <!-- Credits Modal -->
     <div id="creditsModal" class="fixed inset-0 bg-gray-900 bg-opacity-70 flex items-center justify-center p-4 z-50 hidden transition-opacity duration-300 ease-out opacity-0" onclick="closeCreditsModal(event)">
-        <div class="bg-white rounded-xl shadow-2xl w-full max-w-lg p-6 md:p-8 transform transition-transform duration-300 ease-out scale-95" id="creditsModalContent">
+         <!-- --- DARK MODE ---: Added dark mode classes for modal content -->
+        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-2xl w-full max-w-lg p-6 md:p-8 transform transition-transform duration-300 ease-out scale-95" id="creditsModalContent">
             <div class="flex justify-between items-start mb-4">
-                <h2 class="text-2xl font-bold text-dark-text">Credits & Acknowledgements</h2>
-                <button onclick="closeCreditsModal()" class="text-gray-400 hover:text-gray-600 transition">
+                <h2 class="text-2xl font-bold text-dark-text dark:text-white">Credits & Acknowledgements</h2>
+                <button onclick="closeCreditsModal()" class="text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300 transition">
                     <i class="fas fa-times text-xl"></i>
                 </button>
             </div>
-            <p class="text-base text-gray-700 mb-6">Portal created and designed by <strong>Trevor Ray</strong> for <strong>RealSource Properties</strong>.</p>
-            <h3 class="text-lg font-semibold text-dark-text mb-3">Open Source Acknowledgements:</h3>
-            <ul class="list-disc list-inside text-gray-600 space-y-2">
+            <p class="text-base text-gray-700 dark:text-gray-300 mb-6">Portal created and designed by <strong>Trevor Ray</strong> for <strong>RealSource Properties</strong>.</p>
+            <h3 class="text-lg font-semibold text-dark-text dark:text-white mb-3">Open Source Acknowledgements:</h3>
+            <ul class="list-disc list-inside text-gray-600 dark:text-gray-400 space-y-2">
                 <li><strong>Tailwind CSS:</strong> A utility-first CSS framework for rapid UI development.</li>
                 <li><strong>Font Awesome:</strong> The web's most popular icon set and toolkit.</li>
                 <li><strong>Google Fonts (Lexend & Inter):</strong> High-quality, open-source fonts for the web.</li>
             </ul>
-            <button onclick="closeCreditsModal()" class="w-full mt-8 px-6 py-3 text-base font-medium rounded-lg text-gray-700 bg-gray-100 hover:bg-gray-200 focus:outline-none transition-all duration-150 ease-in-out">Close</button>
+            <button onclick="closeCreditsModal()" class="w-full mt-8 px-6 py-3 text-base font-medium rounded-lg text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 focus:outline-none transition-all duration-150 ease-in-out">Close</button>
         </div>
     </div>
 
@@ -199,22 +225,24 @@
         }
         
         // --- On Page Load ---
-        window.onload = function() {
+        document.addEventListener('DOMContentLoaded', function() {
             const dismissedUntil = localStorage.getItem('welcomeDismissed');
             const now = new Date().getTime();
 
             if (!dismissedUntil || now > dismissedUntil) {
                 openWelcomeModal();
             }
-        };
+        });
 
 
         apps.forEach(app => {
             const tile = document.createElement("a");
-            const tileClasses = app.disabled ? "opacity-50 cursor-not-allowed bg-gray-100 hover:bg-gray-100 hover:transform-none" : "group hover:-translate-y-1 hover:bg-blue-50";
-            tile.className = `p-6 flex flex-col items-center justify-center bg-white rounded-xl shadow-md transition-all duration-300 ease-in-out cursor-pointer hover:shadow-lg ${tileClasses}`;
+            // --- DARK MODE ---: Added dark mode classes for tiles
+            const tileClasses = app.disabled ? "opacity-50 cursor-not-allowed bg-gray-100 dark:bg-gray-800 dark:text-gray-400 hover:bg-gray-100 hover:transform-none" : "group hover:-translate-y-1 hover:bg-blue-50 dark:hover:bg-gray-700";
+            tile.className = `p-6 flex flex-col items-center justify-center bg-white dark:bg-gray-800 rounded-xl shadow-md transition-all duration-300 ease-in-out cursor-pointer hover:shadow-lg ${tileClasses}`;
             tile.href = "#";
-            tile.innerHTML = `<i class="${app.icon} text-4xl text-primary-blue mb-4 transition-all duration-300 group-hover:text-blue-600"></i><h3 class="text-lg font-semibold text-dark-text text-center transition-all duration-300 group-hover:text-blue-800">${app.name}</h3>`;
+            // --- DARK MODE ---: Added dark mode classes for tile text
+            tile.innerHTML = `<i class="${app.icon} text-4xl text-primary-blue mb-4 transition-all duration-300"></i><h3 class="text-lg font-semibold text-dark-text dark:text-gray-200 text-center transition-all duration-300">${app.name}</h3>`;
             
             if (!app.disabled) {
                 tile.title = app.instructions.replace(/\*\*/g, '').replace(/<br>/g, ' ');
@@ -230,20 +258,71 @@
                 if (app.disabled || !app.link) {
                     modalLink.classList.add('hidden');
                     modalCloseBtn.textContent = "Understood / Close";
-                    instructionBox.classList.add('bg-red-50', 'border-l-4', 'border-red-500');
-                    modalInstructions.classList.add('text-red-900');
+                    // --- DARK MODE ---: Added dark mode classes for instruction box
+                    instructionBox.classList.add('bg-red-50', 'dark:bg-red-900/20', 'border-l-4', 'border-red-500', 'dark:border-red-600');
+                    modalInstructions.classList.add('text-red-900', 'dark:text-red-300');
                 } else {
                     modalLink.classList.remove('hidden');
                     modalLink.textContent = "Continue to Application";
                     modalLink.href = app.link;
                     modalLink.target = "_blank";
                     modalCloseBtn.textContent = "Not now";
-                    instructionBox.classList.add('bg-yellow-50', 'border-l-4', 'border-yellow-500');
-                    modalInstructions.classList.add('text-yellow-900');
+                    // --- DARK MODE ---: Added dark mode classes for instruction box
+                    instructionBox.classList.add('bg-yellow-50', 'dark:bg-yellow-900/20', 'border-l-4', 'border-yellow-500', 'dark:border-yellow-600');
+                    modalInstructions.classList.add('text-yellow-900', 'dark:text-yellow-300');
                 }
                 openModal();
             };
             grid.appendChild(tile);
+        });
+
+        // --- DARK MODE ---: Script for handling theme toggling
+        const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+        const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+        const themeToggleText = document.getElementById('theme-toggle-text');
+        const themeToggleBtn = document.getElementById('theme-toggle');
+        const root = document.documentElement;
+
+        // Function to update the UI based on the theme
+        function updateThemeUI(isDark) {
+            if (isDark) {
+                // Dark mode is ON: Show moon icon, set text to "Toggle Light Mode"
+                themeToggleDarkIcon.classList.remove('hidden');
+                themeToggleLightIcon.classList.add('hidden');
+                themeToggleText.textContent = 'Toggle Light Mode';
+            } else {
+                // Light mode is ON: Show sun icon, set text to "Toggle Dark Mode"
+                themeToggleDarkIcon.classList.add('hidden');
+                themeToggleLightIcon.classList.remove('hidden');
+                themeToggleText.textContent = 'Toggle Dark Mode';
+            }
+        }
+        
+        // Function to apply the theme to the HTML element
+        function applyTheme(isDark) {
+            root.classList.toggle('dark', isDark);
+            localStorage.setItem('color-theme', isDark ? 'dark' : 'light');
+            updateThemeUI(isDark);
+        }
+
+        // Event listener for the toggle button
+        themeToggleBtn.addEventListener('click', function() {
+            const isDarkMode = root.classList.contains('dark');
+            applyTheme(!isDarkMode);
+        });
+
+        // Initialize theme on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            const savedTheme = localStorage.getItem('color-theme');
+            const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            
+            if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
+                root.classList.add('dark');
+                updateThemeUI(true);
+            } else {
+                root.classList.remove('dark');
+                updateThemeUI(false);
+            }
         });
     </script>
 
