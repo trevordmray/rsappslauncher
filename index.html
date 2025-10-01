@@ -85,7 +85,7 @@
                 </button>
             </div>
             <p class="text-base text-gray-700 mb-6">
-                theRAP and Single Sign On (SSO) have been discontinued / Phased Out. You can read more about this change <a href="https://realsource451.sharepoint.com/:w:/g/EZGWxPx5pGVJqIhXIhDQvGQBEjbzLIbZvLmAdjn1O80qhw?e=KLxqXz" target="_blank" class="text-primary-blue font-semibold hover:underline">here</a>.
+                theRAP and Single Sign On (SSO) have been discontinued. You can read more about this change <a href="https://realsource451.sharepoint.com/:w:/g/EZGWxPx5pGVJqIhXIhDQvGQBEjbzLIbZvLmAdjn1O80qhw?e=KLxqXz" target="_blank" class="text-primary-blue font-semibold hover:underline">here</a>.
             </p>
             <div class="flex items-center mb-6">
                 <input id="dontShowAgain" type="checkbox" class="h-4 w-4 text-primary-blue focus:ring-primary-blue border-gray-300 rounded">
@@ -135,17 +135,17 @@
 
     <script>
         const apps = [
-            // Application list based on info.txt
-            { name: "SharePoint", icon: "fa-brands fa-microsoft", link: "https://realsource451.sharepoint.com/", instructions: "To log in, use your **RealSource Outlook Email and Password**" },
-            { name: "Inflection HR", icon: "fa-solid fa-clock", link: "https://secure3.yourpayrollhr.com/ta/IHR0762.clock", instructions: "Log in using your **Alias and password** (Check email for initial password after SSO phase out)<br><br>Example for Jane Doe:<br>Username: **jdoe**<br>Password: (enter known password or initial password from email)" },
             { name: "Entrata", icon: "fa-solid fa-building", link: "https://realsourcemgmt.entrata.com/", instructions: "Log in using your **Alias and password** (Use \"Reset Password\" to get a new password after SSO phase out)<br><br>Example for Jane Doe:<br>Username: **jdoe**<br>Password: (enter known password or reset password using email)" },
+            { name: "Outlook", icon: "fa-solid fa-envelope", link: "https://outlook.microsoft.com", instructions: "To log in, use your **RealSource Outlook Email and Password**" },
+            { name: "Teams", icon: "fa-solid fa-comments", link: "https://teams.microsoft.com/v2/", instructions: "To log in, use your **RealSource Outlook Email and Password**" },
+            { name: "Inflection/Time Clock", icon: "fa-solid fa-clock", link: "https://secure3.yourpayrollhr.com/ta/IHR0762.clock", instructions: "Log in using your **Alias and password** (Check email for initial password after SSO phase out)<br><br>Example for Jane Doe:<br>Username: **jdoe**<br>Password: (enter known password or initial password from email)" },
+            { name: "SharePoint", icon: "fa-brands fa-microsoft", link: "https://realsource451.sharepoint.com/", instructions: "To log in, use your **RealSource Outlook Email and Password**" },
             { name: "EliseAI", icon: "fa-solid fa-robot", link: "https://app.meetelise.com", instructions: "Log in using your **Alias and password** (Use \"Reset Password\" to get a new password after SSO phase out)" },
             { name: "Motivosity", icon: "fa-solid fa-gift", link: "https://www.motivosity.com/", instructions: "Enter **Alias Email (Alias@realsource.net)** and Enter Password. (Use Reset password after SSO Phase Out). (You may also request a one time code for login)." },
             { name: "Concur Expense", icon: "fa-solid fa-credit-card", link: "https://www.concursolutions.com/", instructions: "Use **RealSource Email and Concur password** (Use Reset password after SSO Phase Out)" },
             { name: "LRO", icon: "fa-solid fa-chart-line", link: "https://ao.realpage.com/ysconfig/app/login?authfailed=true", instructions: "Use **email and password** (Unchanged after SSO Phase Out)" },
             { name: "DocuVerus", icon: "fa-solid fa-file-signature", link: "https://app.dvapply.com./ats/login", instructions: "Use **email and password** (Unchanged after SSO Phase Out)" },
             { name: "Reputation", icon: "fa-solid fa-globe", link: "https://app.reputation.com/auth", instructions: "Use **email and password** (Unchanged after SSO Phase Out)" },
-            { name: "Outlook", icon: "fa-solid fa-envelope", link: "https://outlook.microsoft.com", instructions: "To log in, use your **RealSource Outlook Email and Password**" },
             { name: "Teams", icon: "fa-solid fa-comments", link: "https://teams.microsoft.com/v2/", instructions: "To log in, use your **RealSource Outlook Email and Password**" },
             { name: "Support", icon: "fa-solid fa-headset", link: "https://realsource.freshdesk.com", instructions: "Enter a ticket on **Freshdesk** for all support requests." },
             { name: "theRAP Forms", icon: "fa-solid fa-file", link: "https://realsource451.sharepoint.com/:f:/g/EtThzHeloH9Hqwl6ik0A3OUB9KBc0hBGIPicJ3Vrf-fyEg?e=TYFeyq", instructions: "Forms normally found in theRAP have been moved to SharePoint. If you are unable to find a form you need, please submit an IT ticket" },
