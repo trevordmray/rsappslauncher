@@ -269,18 +269,24 @@
                 themeToggleLightIcon.classList.toggle('hidden', isDark);
                 themeToggleText.textContent = isDark ? 'Toggle Light Mode' : 'Toggle Dark Mode';
             };
-
-            const applyTheme = (isDark) => {
+            
+            const applyTheme = (isDark, manual = false) => {
                 root.classList.toggle('dark', isDark);
-                localStorage.setItem('color-theme', isDark ? 'dark' : 'light');
+                if (manual) {
+                    localStorage.setItem('color-theme', isDark ? 'dark' : 'light');
+                }
                 updateThemeUI(isDark);
             };
 
             const initializeTheme = () => {
                 const savedTheme = localStorage.getItem('color-theme');
                 const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-                const isDark = savedTheme === 'dark' || (!savedTheme && prefersDark);
-                applyTheme(isDark);
+                
+                if (savedTheme) {
+                    applyTheme(savedTheme === 'dark', true);
+                } else {
+                    applyTheme(prefersDark);
+                }
             };
 
             // --- App Tile Rendering ---
@@ -307,7 +313,7 @@
             const setupEventListeners = () => {
                 // Theme toggle
                 themeToggleBtn.addEventListener('click', () => {
-                    applyTheme(!root.classList.contains('dark'));
+                    applyTheme(!root.classList.contains('dark'), true);
                 });
 
                 // Credits button
@@ -339,6 +345,14 @@
                         }
                     });
                 });
+
+                // Listen for OS theme changes
+                window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
+                    // Only update if no theme is manually set in localStorage
+                    if (!localStorage.getItem('color-theme')) {
+                        applyTheme(event.matches);
+                    }
+                });
             };
 
             // --- 5. INITIALIZATION ---
@@ -356,3 +370,4 @@
 
 </body>
 </html>
+
