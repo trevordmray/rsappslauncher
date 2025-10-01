@@ -8,10 +8,18 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Load Font Awesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@600&display=swap" rel="stylesheet">
     <style>
         /* Apply the Inter font globally */
         body {
             font-family: 'Inter', sans-serif;
+        }
+        /* Custom font for the main header title */
+        .header-title {
+            font-family: 'Lexend', sans-serif;
         }
         /* Custom scrollbar for a cleaner look */
         ::-webkit-scrollbar {
@@ -42,7 +50,7 @@
         <!-- Company Logo -->
         <img src="https://raw.githubusercontent.com/trevordmray/rsappslauncher/main/realsourcelogo.png" alt="RealSource Logo" class="mx-auto h-24 w-auto mb-4">
         
-        <h1 class="text-4xl font-extrabold text-dark-text tracking-tight mt-6 mb-2">
+        <h1 class="header-title text-4xl font-semibold bg-clip-text text-transparent bg-gradient-to-r from-primary-blue to-sky-500 mt-6 mb-2">
             RealSource Application Hub
         </h1>
         <p class="text-lg text-gray-500">
@@ -98,7 +106,7 @@
             
             // Support & Disabled
             { name: "Support", icon: "fa-solid fa-headset", link: "https://realsource.freshdesk.com", instructions: "Enter a ticket on **Freshdesk** for all support requests." },
-            { name: "Document Hub", icon: "fa-solid fa-file", link: "", instructions: "A document system for forms that would be normally found in the RAP is **coming soon**.", disabled: true },
+            { name: "theRAP Forms", icon: "fa-solid fa-file", link: "https://realsource451.sharepoint.com/:f:/g/EtThzHeloH9Hqwl6ik0A3OUB9KBc0hBGIPicJ3Vrf-fyEg?e=TYFeyq", instructions: "Forms normally found in theRAP have been moved to SharePoint. If you are unable to find a form you need, please submit an IT ticket" },
             { name: "GraceHill", icon: "fa-solid fa-book", link: "", instructions: "**Discontinued** after SSO Phase Out - Employees will no longer need to log into this system", disabled: true },
         ];
 
