@@ -1,15 +1,11 @@
 <!DOCTYPE html>
-<!-- The `class` attribute is left empty so JavaScript can add 'dark' to it -->
 <html lang="en" class="">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>RealSource App Portal</title>
-    <!-- Load Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Load Font Awesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    <!-- Google Fonts: Inter for body, Lexend for headers -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Lexend:wght@600&display=swap" rel="stylesheet">
@@ -51,14 +47,10 @@
         }
     </script>
 </head>
-<!-- Set background and text colors for light/dark modes -->
 <body class="bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-gray-300 min-h-screen transition-colors duration-300">
 
-    <!-- Main content container with padding to avoid overlap with the fixed footer -->
     <main class="p-4 sm:p-8 pb-24">
-        <!-- Header Section -->
         <header class="max-w-4xl mx-auto mb-10 text-center">
-            <!-- Company Logo (swaps for dark mode) -->
             <img src="https://raw.githubusercontent.com/trevordmray/rsappslauncher/main/realsourcelogo.png" alt="RealSource Logo" class="mx-auto h-24 w-auto mb-4 block dark:hidden">
             <img src="https://raw.githubusercontent.com/trevordmray/rsappslauncher/main/realsourcelogorev.png" alt="RealSource Logo" class="mx-auto h-24 w-auto mb-4 hidden dark:block">
             
@@ -70,12 +62,9 @@
             </p>
         </header>
 
-        <!-- Application Grid -->
         <div class="max-w-5xl mx-auto grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6" id="appGrid">
-            <!-- App tiles will be dynamically inserted here by JavaScript -->
-        </div>
+            </div>
 
-        <!-- Security Disclaimer -->
         <footer class="max-w-4xl mx-auto mt-12 text-center">
             <p class="text-xs text-gray-400 dark:text-gray-500 leading-relaxed">
                 This portal and its contents are the exclusive property of RealSource Properties and are intended for authorized employees only. Unauthorized access, use, or distribution of any information contained within this system is strictly prohibited and may result in legal action. By proceeding, you acknowledge and agree to abide by all company policies regarding the use of internal systems and confidential data. If you are not an authorized user, you must exit this portal immediately.
@@ -83,17 +72,14 @@
         </footer>
     </main>
     
-    <!-- Sticky Footer Bar for UI Controls -->
     <div class="fixed bottom-0 left-0 w-full p-2 sm:p-4 bg-gray-100/90 dark:bg-gray-900/90 backdrop-blur-sm border-t border-gray-200 dark:border-gray-700 z-40">
         <div class="max-w-5xl mx-auto flex justify-between items-center">
-            <!-- Dark Mode Toggle Button -->
             <button id="theme-toggle" type="button" class="text-gray-500 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm px-4 py-2.5 transition flex items-center gap-x-2 font-medium">
                 <i id="theme-toggle-light-icon" class="fa-solid fa-sun hidden text-xl"></i>
                 <i id="theme-toggle-dark-icon" class="fa-solid fa-moon hidden text-xl"></i>
                 <span id="theme-toggle-text"></span>
             </button>
 
-            <!-- Credits Button -->
             <button id="credits-button" class="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-blue">
                 <i class="fas fa-info-circle text-gray-500 dark:text-gray-400 text-2xl"></i>
             </button>
@@ -101,9 +87,6 @@
     </div>
 
 
-    <!-- MODALS -->
-
-    <!-- Welcome Modal -->
     <div id="welcomeModal" class="fixed inset-0 bg-gray-900 bg-opacity-70 flex items-center justify-center p-4 z-50 hidden transition-opacity duration-300 ease-out opacity-0">
         <div class="bg-white dark:bg-gray-800 rounded-xl shadow-2xl w-full max-w-lg p-6 md:p-8 transform transition-transform duration-300 ease-out scale-95">
             <div class="flex justify-between items-start mb-4">
@@ -124,7 +107,6 @@
     </div>
 
 
-    <!-- App Instructions Modal -->
     <div id="appModal" class="fixed inset-0 bg-gray-900 bg-opacity-70 flex items-center justify-center p-4 z-50 hidden transition-opacity duration-300 ease-out opacity-0">
         <div id="appModalContent" class="bg-white dark:bg-gray-800 rounded-xl shadow-2xl w-full max-w-lg p-6 md:p-8 transform transition-transform duration-300 ease-out scale-95">
             <div class="flex justify-between items-start mb-4">
@@ -136,12 +118,11 @@
             <div id="instructionBox" class="p-4 rounded-lg mb-6">
                 <p id="modalInstructions" class="text-base"></p>
             </div>
-            <a id="modalLink" class="w-full inline-flex justify-center items-center px-6 py-3 border border-transparent text-base font-medium rounded-lg text-white bg-primary-blue hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-blue transition-all duration-150 ease-in-out" target="_blank">Continue to Application</a>
+            <a id="modalLink" class="w-full inline-flex justify-center items-center px-6 py-3 border border-transparent text-base font-medium rounded-lg text-white bg-primary-blue hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-blue transition-all duration-150 ease-in-out">Continue to Application</a>
             <button data-modal-hide="appModal" id="modalCloseBtn" class="w-full mt-3 px-6 py-3 text-base font-medium rounded-lg text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 focus:outline-none transition-all duration-150 ease-in-out">Understood / Close</button>
         </div>
     </div>
 
-    <!-- Credits Modal -->
     <div id="creditsModal" class="fixed inset-0 bg-gray-900 bg-opacity-70 flex items-center justify-center p-4 z-50 hidden transition-opacity duration-300 ease-out opacity-0">
         <div class="bg-white dark:bg-gray-800 rounded-xl shadow-2xl w-full max-w-lg p-6 md:p-8 transform transition-transform duration-300 ease-out scale-95">
             <div class="flex justify-between items-start mb-4">
