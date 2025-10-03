@@ -160,6 +160,7 @@
                 { name: "DocuVerus", icon: "fa-solid fa-file-signature", link: "https://app.dvapply.com./ats/login", instructions: "Use **email and password** (Unchanged after SSO Phase Out)" },
                 { name: "Reputation", icon: "fa-solid fa-globe", link: "https://app.reputation.com/auth", instructions: "Use **email and password** (Unchanged after SSO Phase Out)" },
                 { name: "theRAP Forms", icon: "fa-solid fa-file", link: "https://realsource451.sharepoint.com/:f:/g/EtThzHeloH9Hqwl6ik0A3OUB9KBc0hBGIPicJ3Vrf-fyEg?e=TYFeyq", instructions: "Forms normally found in theRAP have been moved to SharePoint. If you are unable to find a form you need, please submit an IT ticket" },
+                { name: "Property Contacts", icon: "fa-solid fa-address-book", link: "https://realsource451.sharepoint.com/:b:/g/EQ8OHM1fawhLukJkZeDg2-oBgQZYaYNhLstfQjviVbnv0g?e=VPFRGI", directLink: true },
                 { name: "Support", icon: "fa-solid fa-headset", link: "https://realsource.freshdesk.com", instructions: "Enter a ticket on **Freshdesk** for all support requests." },
                 { name: "GraceHill", icon: "fa-solid fa-book", link: "", instructions: "**Discontinued** after SSO Phase Out - Employees will no longer need to log into this system", disabled: true },
             ];
@@ -269,13 +270,20 @@
                     const tileClasses = app.disabled ? "opacity-50 cursor-not-allowed bg-gray-100 dark:bg-gray-800 dark:text-gray-400 hover:bg-gray-100 hover:transform-none" : "group hover:-translate-y-1 hover:bg-blue-50 dark:hover:bg-gray-700";
                     
                     tile.className = `p-6 flex flex-col items-center justify-center bg-white dark:bg-gray-800 rounded-xl shadow-md transition-all duration-300 ease-in-out cursor-pointer hover:shadow-lg ${tileClasses}`;
-                    tile.href = "#";
                     tile.innerHTML = `<i class="${app.icon} text-4xl text-primary-blue mb-4 transition-all duration-300"></i><h3 class="text-lg font-semibold text-dark-text dark:text-gray-200 text-center transition-all duration-300">${app.name}</h3>`;
                     
-                    tile.addEventListener('click', (e) => {
-                        e.preventDefault();
-                        showAppInfoModal(app);
-                    });
+                    // If the app has a directLink, open it in a new tab. Otherwise, show the info modal.
+                    if (app.directLink) {
+                        tile.href = app.link;
+                        tile.target = "_blank";
+                        tile.rel = "noopener noreferrer"; // Good practice for security and performance
+                    } else {
+                        tile.href = "#";
+                        tile.addEventListener('click', (e) => {
+                            e.preventDefault();
+                            showAppInfoModal(app);
+                        });
+                    }
 
                     appGrid.appendChild(tile);
                 });
@@ -340,3 +348,4 @@
 
 </body>
 </html>
+
