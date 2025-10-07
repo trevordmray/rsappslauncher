@@ -51,6 +51,7 @@
 
     <main class="p-4 sm:p-8 pb-24">
         <header class="max-w-4xl mx-auto mb-10 text-center">
+            <!-- RealSource Logos (Light and Dark) -->
             <img src="https://raw.githubusercontent.com/trevordmray/rsappslauncher/main/realsourcelogo.png" alt="RealSource Logo" class="mx-auto h-24 w-auto mb-4 block dark:hidden">
             <img src="https://raw.githubusercontent.com/trevordmray/rsappslauncher/main/realsourcelogorev.png" alt="RealSource Logo" class="mx-auto h-24 w-auto mb-4 hidden dark:block">
             
@@ -63,7 +64,8 @@
         </header>
 
         <div class="max-w-5xl mx-auto grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6" id="appGrid">
-            </div>
+            <!-- App tiles will be injected here by JavaScript -->
+        </div>
 
         <footer class="max-w-4xl mx-auto mt-12 text-center">
             <p class="text-xs text-gray-400 dark:text-gray-500 leading-relaxed">
@@ -72,6 +74,7 @@
         </footer>
     </main>
     
+    <!-- Footer Bar with Theme Toggle and Credits -->
     <div class="fixed bottom-0 left-0 w-full p-2 sm:p-4 bg-gray-100/90 dark:bg-gray-900/90 backdrop-blur-sm border-t border-gray-200 dark:border-gray-700 z-40">
         <div class="max-w-5xl mx-auto flex justify-between items-center">
             <button id="theme-toggle" type="button" class="text-gray-500 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm px-4 py-2.5 transition flex items-center gap-x-2 font-medium">
@@ -87,6 +90,7 @@
     </div>
 
 
+    <!-- Welcome Modal -->
     <div id="welcomeModal" class="fixed inset-0 bg-gray-900 bg-opacity-70 flex items-center justify-center p-4 z-50 hidden transition-opacity duration-300 ease-out opacity-0">
         <div class="bg-white dark:bg-gray-800 rounded-xl shadow-2xl w-full max-w-lg p-6 md:p-8 transform transition-transform duration-300 ease-out scale-95">
             <div class="flex justify-between items-start mb-4">
@@ -107,6 +111,7 @@
     </div>
 
 
+    <!-- Application Info Modal -->
     <div id="appModal" class="fixed inset-0 bg-gray-900 bg-opacity-70 flex items-center justify-center p-4 z-50 hidden transition-opacity duration-300 ease-out opacity-0">
         <div id="appModalContent" class="bg-white dark:bg-gray-800 rounded-xl shadow-2xl w-full max-w-lg p-6 md:p-8 transform transition-transform duration-300 ease-out scale-95">
             <div class="flex justify-between items-start mb-4">
@@ -115,14 +120,18 @@
                     <i class="fas fa-times text-xl"></i>
                 </button>
             </div>
+            <!-- Instruction Box -->
             <div id="instructionBox" class="p-4 rounded-lg mb-6">
                 <p id="modalInstructions" class="text-base"></p>
             </div>
+            <!-- Continue Button (Link) -->
             <a id="modalLink" class="w-full inline-flex justify-center items-center px-6 py-3 border border-transparent text-base font-medium rounded-lg text-white bg-primary-blue hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-blue transition-all duration-150 ease-in-out">Continue to Application</a>
+            <!-- Close Button -->
             <button data-modal-hide="appModal" id="modalCloseBtn" class="w-full mt-3 px-6 py-3 text-base font-medium rounded-lg text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 focus:outline-none transition-all duration-150 ease-in-out">Understood / Close</button>
         </div>
     </div>
 
+    <!-- Credits Modal -->
     <div id="creditsModal" class="fixed inset-0 bg-gray-900 bg-opacity-70 flex items-center justify-center p-4 z-50 hidden transition-opacity duration-300 ease-out opacity-0">
         <div class="bg-white dark:bg-gray-800 rounded-xl shadow-2xl w-full max-w-lg p-6 md:p-8 transform transition-transform duration-300 ease-out scale-95">
             <div class="flex justify-between items-start mb-4">
@@ -147,6 +156,7 @@
         document.addEventListener('DOMContentLoaded', () => {
 
             // --- 1. DATA & CONSTANTS ---
+            // Removed 'disabled' property as all apps are now active.
             const apps = [
                 { name: "Entrata", icon: "fa-solid fa-building", link: "https://realsourcemgmt.entrata.com/", instructions: "Log in using your **Alias and password** (Use \"Reset Password\" to get a new password after SSO phase out)<br><br>Example for Jane Doe:<br>Username: **jdoe**<br>Password: (enter known password or reset password using email)" },
                 { name: "Outlook", icon: "fa-solid fa-envelope", link: "https://outlook.office.com", instructions: "To log in, use your **RealSource Outlook Email and Password**" },
@@ -159,10 +169,10 @@
                 { name: "LRO", icon: "fa-solid fa-chart-line", link: "https://ao.realpage.com/ysconfig/app/login", instructions: "Use **email and password** (Unchanged after SSO Phase Out)" },
                 { name: "DocuVerus", icon: "fa-solid fa-file-signature", link: "https://app.dvapply.com./ats/login", instructions: "Use **email and password** (Unchanged after SSO Phase Out)" },
                 { name: "Reputation", icon: "fa-solid fa-globe", link: "https://app.reputation.com/auth", instructions: "Use **email and password** (Unchanged after SSO Phase Out)" },
+                { name: "GraceHill", icon: "fa-solid fa-book", link: "https://www.gracehillvision.com/realsource", instructions: "Use Alias and Password <br/> <br/> Example: <br/> Username: jdoe <br/> Password: Enter Known Password" },
                 { name: "theRAP Forms", icon: "fa-solid fa-file", link: "https://realsource451.sharepoint.com/:f:/g/EtThzHeloH9Hqwl6ik0A3OUB9KBc0hBGIPicJ3Vrf-fyEg?e=TYFeyq", instructions: "Forms normally found in theRAP have been moved to SharePoint. If you are unable to find a form you need, please submit an IT ticket" },
                 { name: "Property Contacts", icon: "fa-solid fa-address-book", link: "https://realsource451.sharepoint.com/:b:/g/EQ8OHM1fawhLukJkZeDg2-oBgQZYaYNhLstfQjviVbnv0g?e=VPFRGI", directLink: true },
                 { name: "Support", icon: "fa-solid fa-headset", link: "https://realsource.freshdesk.com", instructions: "Enter a ticket on **Freshdesk** for all support requests." },
-                { name: "GraceHill", icon: "fa-solid fa-book", link: "", instructions: "**Discontinued** after SSO Phase Out - Employees will no longer need to log into this system", disabled: true },
             ];
             const WELCOME_DISMISS_KEY = 'welcomeDismissed';
 
@@ -222,25 +232,29 @@
                     showModal(welcomeModal);
                 }
             };
-
+            
+            // Simplified showAppInfoModal: All apps are now active, so we remove the disabled/red logic.
             const showAppInfoModal = (app) => {
                 modalTitle.innerHTML = app.name;
+                // Replace **text** with <strong>text</strong> for bold formatting
                 modalInstructions.innerHTML = app.instructions.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
-                instructionBox.className = 'p-4 rounded-lg mb-6'; // Reset classes
-                modalInstructions.className = 'text-base';
+                
+                // Set classes for the instructional/active state (yellow box)
+                instructionBox.className = 'p-4 rounded-lg mb-6 bg-yellow-50 dark:bg-yellow-900/20 border-l-4 border-yellow-500 dark:border-yellow-600';
+                modalInstructions.className = 'text-base text-yellow-900 dark:text-yellow-300';
+                
+                modalLink.href = app.link || '#'; // Set the link
+                modalCloseBtn.textContent = "Not now";
 
-                if (app.disabled || !app.link) {
+                // Check for apps that might be informational only (no link, though all in this list currently have one)
+                if (app.link) {
+                    modalLink.classList.remove('hidden');
+                } else {
+                    // Fallback for purely informational apps (though none currently exist)
                     modalLink.classList.add('hidden');
                     modalCloseBtn.textContent = "Understood / Close";
-                    instructionBox.classList.add('bg-red-50', 'dark:bg-red-900/20', 'border-l-4', 'border-red-500', 'dark:border-red-600');
-                    modalInstructions.classList.add('text-red-900', 'dark:text-red-300');
-                } else {
-                    modalLink.classList.remove('hidden');
-                    modalLink.href = app.link;
-                    modalCloseBtn.textContent = "Not now";
-                    instructionBox.classList.add('bg-yellow-50', 'dark:bg-yellow-900/20', 'border-l-4', 'border-yellow-500', 'dark:border-yellow-600');
-                    modalInstructions.classList.add('text-yellow-900', 'dark:text-yellow-300');
                 }
+                
                 showModal(appModal);
             };
 
@@ -263,13 +277,16 @@
             };
 
             // --- App Tile Rendering ---
+            // Simplified: All tiles are now active and use the same interactive classes.
             const renderAppTiles = () => {
                 appGrid.innerHTML = ''; // Clear grid before rendering
+                // Classes for an active, interactive tile
+                const activeTileClasses = "group hover:-translate-y-1 hover:bg-blue-50 dark:hover:bg-gray-700";
+
                 apps.forEach(app => {
                     const tile = document.createElement("a");
-                    const tileClasses = app.disabled ? "opacity-50 cursor-not-allowed bg-gray-100 dark:bg-gray-800 dark:text-gray-400 hover:bg-gray-100 hover:transform-none" : "group hover:-translate-y-1 hover:bg-blue-50 dark:hover:bg-gray-700";
                     
-                    tile.className = `p-6 flex flex-col items-center justify-center bg-white dark:bg-gray-800 rounded-xl shadow-md transition-all duration-300 ease-in-out cursor-pointer hover:shadow-lg ${tileClasses}`;
+                    tile.className = `p-6 flex flex-col items-center justify-center bg-white dark:bg-gray-800 rounded-xl shadow-md transition-all duration-300 ease-in-out cursor-pointer hover:shadow-lg ${activeTileClasses}`;
                     tile.innerHTML = `<i class="${app.icon} text-4xl text-primary-blue mb-4 transition-all duration-300"></i><h3 class="text-lg font-semibold text-dark-text dark:text-gray-200 text-center transition-all duration-300">${app.name}</h3>`;
                     
                     // If the app has a directLink, open it in a new tab. Otherwise, show the info modal.
@@ -348,4 +365,3 @@
 
 </body>
 </html>
-
