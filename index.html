@@ -61,7 +61,8 @@
                 Application Hub
             </h1>
             <p class="text-lg text-gray-500 dark:text-gray-400">
-                Quickly access your RealSource tools and resources.
+                SSO has been discontinued, you can read more about this update <a href="https://realsource451.sharepoint.com/:w:/g/EZGWxPx5pGVJqIhXIhDQvGQBEjbzLIbZvLmAdjn1O80qhw" style="color: blue; text-decoration: underline;">here.</a> <br/>
+                Use the links below to quickly access your applications!
             </p>
         </header>
 
@@ -155,93 +156,128 @@
                 { name: "Support", icon: "fa-solid fa-headset", link: "https://realsource.freshdesk.com", instructions: "Enter a ticket on **Freshdesk** for all support requests." },
             ];
 
-            // --- 2. DOM ELEMENT SELECTIONS ---
+            // --- 2. DOM ELEMENT SELECTIONS (Consolidated) ---
             const root = document.documentElement;
-            const appGrid = document.getElementById("appGrid");
-            
-            // Buttons
-            const themeToggleBtn = document.getElementById('theme-toggle');
-            const creditsBtn = document.getElementById("credits-button");
+            const DOMElements = {
+                appGrid: document.getElementById("appGrid"),
+                
+                // Theme elements
+                themeToggleBtn: document.getElementById('theme-toggle'),
+                themeToggleLightIcon: document.getElementById('theme-toggle-light-icon'),
+                themeToggleDarkIcon: document.getElementById('theme-toggle-dark-icon'),
+                themeToggleText: document.getElementById('theme-toggle-text'),
 
-            // Theme UI elements
-            const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
-            const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
-            const themeToggleText = document.getElementById('theme-toggle-text');
-            
-            // Modals
-            const appModal = document.getElementById("appModal");
-            const creditsModal = document.getElementById("creditsModal");
-            
-            // App Modal Content
-            const modalTitle = document.getElementById("modalTitle");
-            const modalInstructions = document.getElementById("modalInstructions");
-            const modalLink = document.getElementById("modalLink");
-            const modalCloseBtn = document.getElementById("modalCloseBtn");
-            const instructionBox = document.getElementById("instructionBox");
+                // Modals & Triggers
+                creditsBtn: document.getElementById("credits-button"),
+                appModal: document.getElementById("appModal"),
+                creditsModal: document.getElementById("creditsModal"),
+                
+                // App Modal Content
+                modalTitle: document.getElementById("modalTitle"),
+                modalInstructions: document.getElementById("modalInstructions"),
+                modalLink: document.getElementById("modalLink"),
+                modalCloseBtn: document.getElementById("modalCloseBtn"),
+                instructionBox: document.getElementById("instructionBox"),
+            };
 
 
             // --- 3. FUNCTIONS ---
 
-            // --- Modal Management ---
+            /**
+             * Shows a modal element with smooth CSS transitions.
+             * @param {HTMLElement} modalElement - The modal wrapper element.
+             * @param {HTMLElement} contentElement - The modal content element (for transform transition).
+             */
             const showModal = (modalElement) => {
                 if (!modalElement) return;
+                
+                // Find the direct child content div that has the transition classes (scale-95)
+                const contentElement = modalElement.querySelector('div[id$="ModalContent"], div:not([data-modal-hide])');
+
+                // 1. Remove 'hidden' immediately
                 modalElement.classList.remove('hidden');
-                setTimeout(() => modalElement.classList.remove('opacity-0'), 10);
+                
+                // 2. Schedule removal of opacity/scale classes for transition
+                setTimeout(() => {
+                    modalElement.classList.remove('opacity-0');
+                    if (contentElement) {
+                        contentElement.classList.remove('scale-95');
+                    }
+                }, 10); // Small delay ensures the browser registers the class removal for transition
             };
 
+            /**
+             * Hides a modal element with smooth CSS transitions.
+             * @param {HTMLElement} modalElement - The modal wrapper element.
+             */
             const hideModal = (modalElement) => {
                 if (!modalElement) return;
+
+                const contentElement = modalElement.querySelector('div[id$="ModalContent"], div:not([data-modal-hide])');
+                
+                // 1. Add opacity/scale classes for transition
                 modalElement.classList.add('opacity-0');
-                setTimeout(() => modalElement.classList.add('hidden'), 300);
+                if (contentElement) {
+                    contentElement.classList.add('scale-95');
+                }
+
+                // 2. Add 'hidden' after the transition completes (300ms)
+                setTimeout(() => {
+                    modalElement.classList.add('hidden');
+                }, 300);
             };
             
-            // handleWelcomeModalClose and checkWelcomeModal functions removed.
-            
+            /**
+             * Populates and displays the application information modal.
+             * @param {Object} app - The application data object.
+             */
             const showAppInfoModal = (app) => {
-                modalTitle.innerHTML = app.name;
+                // Populate content
+                DOMElements.modalTitle.innerHTML = app.name;
                 // Replace **text** with <strong>text</strong> for bold formatting
-                modalInstructions.innerHTML = app.instructions.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+                DOMElements.modalInstructions.innerHTML = app.instructions.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+                DOMElements.modalLink.href = app.link || '#';
                 
-                // Set classes for the instructional/active state (yellow box)
-                instructionBox.className = 'p-4 rounded-lg mb-6 bg-yellow-50 dark:bg-yellow-900/20 border-l-4 border-yellow-500 dark:border-yellow-600';
-                modalInstructions.className = 'text-base text-yellow-900 dark:text-yellow-300';
+                // Set instructional/active state (yellow box) classes
+                DOMElements.instructionBox.className = 'p-4 rounded-lg mb-6 bg-yellow-50 dark:bg-yellow-900/20 border-l-4 border-yellow-500 dark:border-yellow-600';
+                DOMElements.modalInstructions.className = 'text-base text-yellow-900 dark:text-yellow-300';
                 
-                modalLink.href = app.link || '#'; // Set the link
-                modalCloseBtn.textContent = "Not now";
-
-                // Check for apps that might be informational only (no link, though all in this list currently have one)
+                // Update button visibility and text based on link presence
                 if (app.link) {
-                    modalLink.classList.remove('hidden');
+                    DOMElements.modalLink.classList.remove('hidden');
+                    DOMElements.modalCloseBtn.textContent = "Not now / Close";
                 } else {
-                    // Fallback for purely informational apps (though none currently exist)
-                    modalLink.classList.add('hidden');
-                    modalCloseBtn.textContent = "Understood / Close";
+                    DOMElements.modalLink.classList.add('hidden');
+                    DOMElements.modalCloseBtn.textContent = "Understood / Close";
                 }
                 
-                showModal(appModal);
+                showModal(DOMElements.appModal);
             };
 
 
             // --- Theme Management ---
+            /**
+             * Updates the theme toggle icons and text based on the current theme.
+             * @param {boolean} isDark - True if dark mode is active.
+             */
             const updateThemeUI = (isDark) => {
-                themeToggleDarkIcon.classList.toggle('hidden', !isDark);
-                themeToggleLightIcon.classList.toggle('hidden', isDark);
-                themeToggleText.textContent = isDark ? 'Toggle Light Mode' : 'Toggle Dark Mode';
+                DOMElements.themeToggleDarkIcon.classList.toggle('hidden', !isDark);
+                DOMElements.themeToggleLightIcon.classList.toggle('hidden', isDark);
+                DOMElements.themeToggleText.textContent = isDark ? 'Toggle Light Mode' : 'Toggle Dark Mode';
             };
             
+            /**
+             * Applies the dark/light mode class to the root element.
+             * @param {boolean} isDark - True to apply dark mode.
+             */
             const applyTheme = (isDark) => {
                 root.classList.toggle('dark', isDark);
                 updateThemeUI(isDark);
             };
 
-            const initializeTheme = () => {
-                const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-                applyTheme(prefersDark);
-            };
-
             // --- App Tile Rendering ---
             const renderAppTiles = () => {
-                appGrid.innerHTML = ''; // Clear grid before rendering
+                DOMElements.appGrid.innerHTML = ''; 
                 // Classes for an active, interactive tile
                 const activeTileClasses = "group hover:-translate-y-1 hover:bg-blue-50 dark:hover:bg-gray-700";
 
@@ -264,22 +300,34 @@
                         });
                     }
 
-                    appGrid.appendChild(tile);
+                    DOMElements.appGrid.appendChild(tile);
                 });
             };
 
-            // --- 4. EVENT LISTENER SETUP ---
-            const setupEventListeners = () => {
-                // Theme toggle
-                themeToggleBtn.addEventListener('click', () => {
+            // --- 4. EVENT LISTENER SETUP AND THEME INITIALIZATION ---
+            const setupInteraction = () => {
+                
+                // Initialize theme based on system preference first
+                const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                applyTheme(prefersDark);
+
+                // Listen for OS theme changes and update the theme
+                window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
+                    // Update based on OS theme changes, unless the user manually toggled it later.
+                    applyTheme(event.matches);
+                });
+
+                // Theme toggle button
+                DOMElements.themeToggleBtn.addEventListener('click', () => {
+                    // Toggle the theme based on the current state
                     applyTheme(!root.classList.contains('dark'));
                 });
 
-                // Credits button
-                creditsBtn.addEventListener('click', () => showModal(creditsModal));
+                // Credits button opens the modal
+                DOMElements.creditsBtn.addEventListener('click', () => showModal(DOMElements.creditsModal));
                 
 
-                // Generic modal close buttons (using data attributes)
+                // Generic modal close buttons (using data attributes on the cross icon and close buttons)
                 document.querySelectorAll('[data-modal-hide]').forEach(button => {
                     const modalId = button.getAttribute('data-modal-hide');
                     const modalEl = document.getElementById(modalId);
@@ -289,27 +337,19 @@
                 });
 
                 // Close modals by clicking on the backdrop
-                [appModal, creditsModal].forEach(modalEl => { // Only checking appModal and creditsModal now
+                [DOMElements.appModal, DOMElements.creditsModal].forEach(modalEl => {
                     modalEl.addEventListener('click', (event) => {
                         if (event.target === modalEl) {
-                            hideModal(modalEl); // Simplified logic
+                            hideModal(modalEl);
                         }
                     });
-                });
-
-                // Listen for OS theme changes
-                window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
-                    // Always update based on OS theme changes.
-                    applyTheme(event.matches);
                 });
             };
 
             // --- 5. INITIALIZATION ---
             const init = () => {
                 renderAppTiles();
-                initializeTheme();
-                // checkWelcomeModal() call removed.
-                setupEventListeners();
+                setupInteraction();
             };
 
             // Run the application
