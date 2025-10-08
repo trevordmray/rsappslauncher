@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>RealSource App Portal</title>
-    <!-- Favicon link: Using the raw GitHub path for 'thumbnail.png' as requested -->
+    <!-- Favicon link: Using the raw GitHub path for 'thumbnail.png'-->
     <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/trevordmray/rsappslauncher/main/thumbnail.png">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
@@ -137,7 +137,6 @@
         document.addEventListener('DOMContentLoaded', () => {
 
             // --- 1. DATA & CONSTANTS ---
-            // Removed 'disabled' property as all apps are now active.
             const apps = [
                 { name: "Entrata", icon: "fa-solid fa-building", link: "https://realsourcemgmt.entrata.com/", instructions: "Log in using your **Alias and password** (Use \"Reset Password\" to get a new password after SSO phase out)<br><br>Example for Jane Doe:<br>Username: **jdoe**<br>Password: (enter known password or reset password using email)" },
                 { name: "Outlook", icon: "fa-solid fa-envelope", link: "https://outlook.office.com", instructions: "To log in, use your **RealSource Outlook Email and Password**" },
@@ -155,7 +154,6 @@
                 { name: "Property Contacts", icon: "fa-solid fa-address-book", link: "https://realsource451.sharepoint.com/:b:/g/EQ8OHM1fawhLukJkZeDg2-oBgQZYaYNhLstfQjviVbnv0g?e=VPFRGI", directLink: true },
                 { name: "Support", icon: "fa-solid fa-headset", link: "https://realsource.freshdesk.com", instructions: "Enter a ticket on **Freshdesk** for all support requests." },
             ];
-            // WELCOME_DISMISS_KEY constant removed.
 
             // --- 2. DOM ELEMENT SELECTIONS ---
             const root = document.documentElement;
@@ -171,7 +169,6 @@
             const themeToggleText = document.getElementById('theme-toggle-text');
             
             // Modals
-            // welcomeModal removed
             const appModal = document.getElementById("appModal");
             const creditsModal = document.getElementById("creditsModal");
             
@@ -200,7 +197,6 @@
             
             // handleWelcomeModalClose and checkWelcomeModal functions removed.
             
-            // Simplified showAppInfoModal: All apps are now active, so we remove the disabled/red logic.
             const showAppInfoModal = (app) => {
                 modalTitle.innerHTML = app.name;
                 // Replace **text** with <strong>text</strong> for bold formatting
@@ -244,7 +240,6 @@
             };
 
             // --- App Tile Rendering ---
-            // Simplified: All tiles are now active and use the same interactive classes.
             const renderAppTiles = () => {
                 appGrid.innerHTML = ''; // Clear grid before rendering
                 // Classes for an active, interactive tile
@@ -283,7 +278,6 @@
                 // Credits button
                 creditsBtn.addEventListener('click', () => showModal(creditsModal));
                 
-                // Welcome modal close buttons were removed.
 
                 // Generic modal close buttons (using data attributes)
                 document.querySelectorAll('[data-modal-hide]').forEach(button => {
