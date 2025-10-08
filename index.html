@@ -92,27 +92,6 @@
     </div>
 
 
-    <!-- Welcome Modal -->
-    <div id="welcomeModal" class="fixed inset-0 bg-gray-900 bg-opacity-70 flex items-center justify-center p-4 z-50 hidden transition-opacity duration-300 ease-out opacity-0">
-        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-2xl w-full max-w-lg p-6 md:p-8 transform transition-transform duration-300 ease-out scale-95">
-            <div class="flex justify-between items-start mb-4">
-                <h2 class="text-2xl font-bold text-dark-text dark:text-white">Welcome! Important Changes</h2>
-                 <button id="welcome-close-button-x" class="text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300 transition">
-                    <i class="fas fa-times text-xl"></i>
-                </button>
-            </div>
-            <p class="text-base text-gray-700 dark:text-gray-300 mb-6">
-                theRAP and Single Sign On (SSO) have been discontinued. You can read more about this change <a href="https://realsource451.sharepoint.com/:w:/g/EZGWxPx5pGVJqIhXIhDQvGQBEjbzLIbZvLmAdjn1O80qhw?e=KLxqXz" target="_blank" class="text-primary-blue font-semibold hover:underline">here</a>.
-            </p>
-            <div class="flex items-center mb-6">
-                <input id="dontShowAgain" type="checkbox" class="h-4 w-4 text-primary-blue focus:ring-primary-blue border-gray-300 dark:border-gray-600 rounded">
-                <label for="dontShowAgain" class="ml-2 block text-sm text-gray-900 dark:text-gray-300">Don't show this again for 24 hours</label>
-            </div>
-            <button id="welcome-close-button" class="w-full mt-3 px-6 py-3 text-base font-medium rounded-lg text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 focus:outline-none transition-all duration-150 ease-in-out">Close</button>
-        </div>
-    </div>
-
-
     <!-- Application Info Modal -->
     <div id="appModal" class="fixed inset-0 bg-gray-900 bg-opacity-70 flex items-center justify-center p-4 z-50 hidden transition-opacity duration-300 ease-out opacity-0">
         <div id="appModalContent" class="bg-white dark:bg-gray-800 rounded-xl shadow-2xl w-full max-w-lg p-6 md:p-8 transform transition-transform duration-300 ease-out scale-95">
@@ -176,7 +155,7 @@
                 { name: "Property Contacts", icon: "fa-solid fa-address-book", link: "https://realsource451.sharepoint.com/:b:/g/EQ8OHM1fawhLukJkZeDg2-oBgQZYaYNhLstfQjviVbnv0g?e=VPFRGI", directLink: true },
                 { name: "Support", icon: "fa-solid fa-headset", link: "https://realsource.freshdesk.com", instructions: "Enter a ticket on **Freshdesk** for all support requests." },
             ];
-            const WELCOME_DISMISS_KEY = 'welcomeDismissed';
+            // WELCOME_DISMISS_KEY constant removed.
 
             // --- 2. DOM ELEMENT SELECTIONS ---
             const root = document.documentElement;
@@ -192,7 +171,7 @@
             const themeToggleText = document.getElementById('theme-toggle-text');
             
             // Modals
-            const welcomeModal = document.getElementById("welcomeModal");
+            // welcomeModal removed
             const appModal = document.getElementById("appModal");
             const creditsModal = document.getElementById("creditsModal");
             
@@ -219,21 +198,7 @@
                 setTimeout(() => modalElement.classList.add('hidden'), 300);
             };
             
-            const handleWelcomeModalClose = () => {
-                const dontShowAgain = document.getElementById('dontShowAgain').checked;
-                if (dontShowAgain) {
-                    const expiry = new Date().getTime() + (24 * 60 * 60 * 1000); // 24 hours
-                    localStorage.setItem(WELCOME_DISMISS_KEY, expiry);
-                }
-                hideModal(welcomeModal);
-            };
-
-            const checkWelcomeModal = () => {
-                const dismissedUntil = localStorage.getItem(WELCOME_DISMISS_KEY);
-                if (!dismissedUntil || new Date().getTime() > dismissedUntil) {
-                    showModal(welcomeModal);
-                }
-            };
+            // handleWelcomeModalClose and checkWelcomeModal functions removed.
             
             // Simplified showAppInfoModal: All apps are now active, so we remove the disabled/red logic.
             const showAppInfoModal = (app) => {
@@ -318,9 +283,7 @@
                 // Credits button
                 creditsBtn.addEventListener('click', () => showModal(creditsModal));
                 
-                // Welcome modal close buttons
-                document.getElementById('welcome-close-button').addEventListener('click', handleWelcomeModalClose);
-                document.getElementById('welcome-close-button-x').addEventListener('click', handleWelcomeModalClose);
+                // Welcome modal close buttons were removed.
 
                 // Generic modal close buttons (using data attributes)
                 document.querySelectorAll('[data-modal-hide]').forEach(button => {
@@ -332,15 +295,10 @@
                 });
 
                 // Close modals by clicking on the backdrop
-                [welcomeModal, appModal, creditsModal].forEach(modalEl => {
+                [appModal, creditsModal].forEach(modalEl => { // Only checking appModal and creditsModal now
                     modalEl.addEventListener('click', (event) => {
                         if (event.target === modalEl) {
-                            // For welcome modal, use its specific close logic
-                            if (modalEl.id === 'welcomeModal') {
-                                handleWelcomeModalClose();
-                            } else {
-                                hideModal(modalEl);
-                            }
+                            hideModal(modalEl); // Simplified logic
                         }
                     });
                 });
@@ -356,7 +314,7 @@
             const init = () => {
                 renderAppTiles();
                 initializeTheme();
-                checkWelcomeModal();
+                // checkWelcomeModal() call removed.
                 setupEventListeners();
             };
 
