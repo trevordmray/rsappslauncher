@@ -200,6 +200,7 @@
 
             // --- 1. DATA & CONSTANTS ---
             let apps = [];
+            let appToAuth = null; // Holds the app object that needs authentication
             const defaultApps = [
                 { name: "Entrata", icon: "fa-solid fa-building", link: "https://realsourcemgmt.entrata.com/", instructions: "Log in using your **Alias and password** (Use \"Reset Password\" to get a new password after SSO phase out)<br><br>Example for Jane Doe:<br>Username: **jdoe**<br>Password: (enter known password or reset password using email)" },
                 { name: "Outlook", icon: "fa-solid fa-envelope", link: "https://outlook.office.com", instructions: "To log in, use your **RealSource Outlook Email and Password**" },
@@ -213,7 +214,7 @@
                 { name: "DocuVerus", icon: "fa-solid fa-file-signature", link: "https://app.dvapply.com./ats/login", instructions: "Use **email and password** (Unchanged after SSO Phase Out)" },
                 { name: "Reputation", icon: "fa-solid fa-globe", link: "https://app.reputation.com/auth", instructions: "Use **email and password** (Unchanged after SSO Phase Out)" },
                 { name: "GraceHill", icon: "fa-solid fa-book", link: "https://www.gracehillvision.com/realsource", instructions: "Use Alias and Password <br/> <br/> Example: <br/> Username: jdoe <br/> Password: Enter Known Password" },
-                { name: "theRAP Forms", icon: "fa-solid fa-file", link: "https://realsource451.sharepoint.com/:f:/g/EtThzHeloH9Hqwl6ik0A3OUB9KBc0hBGIPicJ3Vrf-fyEg?e=TYFeyq", instructions: "Forms normally found in theRAP have been moved to SharePoint. If you are unable to find a form you need, please submit an IT ticket" },
+                { name: "theRAP Forms", icon: "fa-solid fa-file", requiresAuth: true }, // Link removed for security
                 { name: "Property Contacts", icon: "fa-solid fa-address-book", requiresAuth: true }, // Link removed for security
                 { name: "Support", icon: "fa-solid fa-headset", link: "https://realsource.freshdesk.com", instructions: "Enter a ticket on **Freshdesk** for all support requests." },
             ];
@@ -282,7 +283,12 @@
                 const contentElement = modalElement.querySelector('div[id$="ModalContent"]');
                 modalElement.classList.add('opacity-0');
                 if (contentElement) contentElement.classList.add('scale-95');
-                setTimeout(() => modalElement.classList.add('hidden'), 300);
+                setTimeout(() => {
+                    modalElement.classList.add('hidden');
+                     if (modalElement === DOMElements.aliasModal) {
+                        appToAuth = null; // Reset auth target when modal is hidden
+                    }
+                }, 300);
             };
             
             const showAppInfoModal = (app) => {
@@ -340,6 +346,7 @@
                         tile.href = "#";
                         tile.addEventListener('click', (e) => {
                             e.preventDefault();
+                            appToAuth = app; // Set which app needs auth
                             showAliasModal();
                         });
                     } else if (app.directLink || app.isCustom) {
@@ -394,6 +401,8 @@
             
             const handleAliasSubmit = async (event) => {
                 event.preventDefault();
+                if (!appToAuth) return; // Safety check
+
                 const aliasInput = DOMElements.aliasForm.elements.aliasName;
                 const enteredAlias = aliasInput.value.trim().toLowerCase();
                 
@@ -405,28 +414,36 @@
 
                 try {
                     const response = await fetch(aliasUrl);
-                    if (!response.ok) {
-                        throw new Error('Could not fetch verification file.');
-                    }
+                    if (!response.ok) throw new Error('Could not fetch verification file.');
+                    
                     const csvText = await response.text();
-                    const lines = csvText.split('\n').filter(line => line.trim() !== ''); // Filter out empty lines
+                    const lines = csvText.split('\n').filter(line => line.trim() !== '');
                     
-                    if (lines.length === 0) {
-                        throw new Error('Verification file is empty.');
-                    }
+                    if (lines.length < 3) throw new Error('Verification file is malformed.');
                     
-                    const contactsLink = lines.shift().trim(); // First line is the link
-                    const validAliases = lines.map(name => name.trim().toLowerCase());
+                    const contactsLink = lines[0].trim();
+                    const formsLink = lines[1].trim();
+                    const validAliases = lines.slice(2).map(name => name.trim().toLowerCase());
 
                     if (validAliases.includes(enteredAlias)) {
-                        window.open(contactsLink, '_blank');
+                        let targetLink = '';
+                        if (appToAuth.name === 'Property Contacts') {
+                            targetLink = contactsLink;
+                        } else if (appToAuth.name === 'theRAP Forms') {
+                            targetLink = formsLink;
+                        }
+                        
+                        if(targetLink) {
+                            window.open(targetLink, '_blank');
+                        }
+                        
                         hideModal(DOMElements.aliasModal);
                     } else {
                         DOMElements.aliasError.textContent = 'Invalid alias. Please try again.';
                         DOMElements.aliasError.classList.remove('hidden');
                     }
                 } catch (error) {
-                    DOMElements.aliasError.textContent = 'Verification failed. Check your connection or contact support.';
+                    DOMElements.aliasError.textContent = 'Verification failed. Check connection or contact support.';
                     DOMElements.aliasError.classList.remove('hidden');
                 } finally {
                     DOMElements.aliasSubmitText.classList.remove('hidden');
