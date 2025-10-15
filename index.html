@@ -144,6 +144,36 @@
             </form>
         </div>
     </div>
+    
+    <!-- Alias Check Modal -->
+    <div id="aliasModal" class="fixed inset-0 bg-gray-900 bg-opacity-70 flex items-center justify-center p-4 z-50 hidden transition-opacity duration-300 ease-out opacity-0">
+        <div id="aliasModalContent" class="bg-white dark:bg-gray-800 rounded-xl shadow-2xl w-full max-w-lg p-6 md:p-8 transform transition-transform duration-300 ease-out scale-95">
+            <div class="flex justify-between items-start mb-4">
+                <h2 class="text-2xl font-bold text-dark-text dark:text-white">Verification Required</h2>
+                <button data-modal-hide="aliasModal" class="text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300 transition">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+            <p class="text-gray-600 dark:text-gray-400 mb-4">To access this resource, please enter your employee alias.</p>
+            <form id="aliasForm">
+                <div class="space-y-4">
+                    <div>
+                        <label for="aliasName" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Alias</label>
+                        <input type="text" id="aliasName" name="aliasName" required class="mt-1 block w-full px-3 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-primary-blue focus:border-primary-blue sm:text-sm">
+                    </div>
+                     <div id="aliasError" class="text-sm text-red-600 dark:text-red-400 hidden"></div>
+                </div>
+                <div class="mt-6 flex justify-end gap-x-3">
+                     <button type="button" data-modal-hide="aliasModal" class="px-4 py-2 text-sm font-medium rounded-lg text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 focus:outline-none">Cancel</button>
+                    <button type="submit" class="inline-flex justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-lg text-white bg-primary-blue hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-blue">
+                        <span id="aliasSubmitText">Verify & Continue</span>
+                        <i id="aliasSpinner" class="fa-solid fa-spinner fa-spin hidden ml-2"></i>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
 
     <!-- Credits Modal -->
     <div id="creditsModal" class="fixed inset-0 bg-gray-900 bg-opacity-70 flex items-center justify-center p-4 z-50 hidden transition-opacity duration-300 ease-out opacity-0">
@@ -184,7 +214,7 @@
                 { name: "Reputation", icon: "fa-solid fa-globe", link: "https://app.reputation.com/auth", instructions: "Use **email and password** (Unchanged after SSO Phase Out)" },
                 { name: "GraceHill", icon: "fa-solid fa-book", link: "https://www.gracehillvision.com/realsource", instructions: "Use Alias and Password <br/> <br/> Example: <br/> Username: jdoe <br/> Password: Enter Known Password" },
                 { name: "theRAP Forms", icon: "fa-solid fa-file", link: "https://realsource451.sharepoint.com/:f:/g/EtThzHeloH9Hqwl6ik0A3OUB9KBc0hBGIPicJ3Vrf-fyEg?e=TYFeyq", instructions: "Forms normally found in theRAP have been moved to SharePoint. If you are unable to find a form you need, please submit an IT ticket" },
-                { name: "Property Contacts", icon: "fa-solid fa-address-book", link: "https://realsource451.sharepoint.com/:b:/g/EQ8OHM1fawhLukJkZeDg2-oBgQZYaYNhLstfQjviVbnv0g?e=VPFRGI", directLink: true },
+                { name: "Property Contacts", icon: "fa-solid fa-address-book", link: "https://realsource451.sharepoint.com/:b:/g/EQ8OHM1fawhLukJkZeDg2-oBgQZYaYNhLstfQjviVbnv0g?e=VPFRGI", requiresAuth: true },
                 { name: "Support", icon: "fa-solid fa-headset", link: "https://realsource.freshdesk.com", instructions: "Enter a ticket on **Freshdesk** for all support requests." },
             ];
 
@@ -205,7 +235,12 @@
                 appModal: document.getElementById("appModal"),
                 addAppModal: document.getElementById("addAppModal"),
                 creditsModal: document.getElementById("creditsModal"),
+                aliasModal: document.getElementById("aliasModal"),
                 addAppForm: document.getElementById("addAppForm"),
+                aliasForm: document.getElementById("aliasForm"),
+                aliasError: document.getElementById("aliasError"),
+                aliasSubmitText: document.getElementById("aliasSubmitText"),
+                aliasSpinner: document.getElementById("aliasSpinner"),
                 
                 // App Modal Content
                 modalTitle: document.getElementById("modalTitle"),
@@ -268,6 +303,13 @@
                 
                 showModal(DOMElements.appModal);
             };
+            
+            const showAliasModal = () => {
+                DOMElements.aliasError.classList.add('hidden');
+                DOMElements.aliasError.textContent = '';
+                DOMElements.aliasForm.reset();
+                showModal(DOMElements.aliasModal);
+            };
 
             // --- Theme Management ---
             const updateThemeUI = (isDark) => {
@@ -294,7 +336,13 @@
                     tile.className = `p-6 flex flex-col items-center justify-center bg-white dark:bg-gray-800 rounded-xl shadow-md transition-all duration-300 ease-in-out cursor-pointer hover:shadow-lg ${activeTileClasses} h-full`;
                     tile.innerHTML = `<i class="${app.icon} text-4xl text-primary-blue mb-4 transition-all duration-300"></i><h3 class="text-lg font-semibold text-dark-text dark:text-gray-200 text-center transition-all duration-300">${app.name}</h3>`;
                     
-                    if (app.directLink || app.isCustom) {
+                    if (app.requiresAuth) {
+                        tile.href = "#";
+                        tile.addEventListener('click', (e) => {
+                            e.preventDefault();
+                            showAliasModal();
+                        });
+                    } else if (app.directLink || app.isCustom) {
                         tile.href = app.link;
                         tile.target = "_blank";
                         tile.rel = "noopener noreferrer";
@@ -343,6 +391,45 @@
                 DOMElements.addAppForm.reset();
                 hideModal(DOMElements.addAppModal);
             };
+            
+            const handleAliasSubmit = async (event) => {
+                event.preventDefault();
+                const aliasInput = DOMElements.aliasForm.elements.aliasName;
+                const enteredAlias = aliasInput.value.trim().toLowerCase();
+                
+                DOMElements.aliasSubmitText.classList.add('hidden');
+                DOMElements.aliasSpinner.classList.remove('hidden');
+                DOMElements.aliasError.classList.add('hidden');
+
+                // NOTE: Replace with your actual raw GitHub URL for aliasnames.csv
+                const aliasUrl = 'https://raw.githubusercontent.com/trevordmray/rsappslauncher/main/aliasnames.csv';
+
+                try {
+                    const response = await fetch(aliasUrl);
+                    if (!response.ok) {
+                        throw new Error('Could not fetch verification file.');
+                    }
+                    const csvText = await response.text();
+                    const validAliases = csvText.split('\n').map(name => name.trim().toLowerCase());
+
+                    if (validAliases.includes(enteredAlias)) {
+                        const contactsApp = apps.find(app => app.requiresAuth);
+                        if(contactsApp) {
+                            window.open(contactsApp.link, '_blank');
+                        }
+                        hideModal(DOMElements.aliasModal);
+                    } else {
+                        DOMElements.aliasError.textContent = 'Invalid alias. Please try again.';
+                        DOMElements.aliasError.classList.remove('hidden');
+                    }
+                } catch (error) {
+                    DOMElements.aliasError.textContent = 'Verification failed. Check your connection or contact support.';
+                    DOMElements.aliasError.classList.remove('hidden');
+                } finally {
+                    DOMElements.aliasSubmitText.classList.remove('hidden');
+                    DOMElements.aliasSpinner.classList.add('hidden');
+                }
+            };
 
             // --- 4. EVENT LISTENER SETUP AND THEME INITIALIZATION ---
             const setupInteraction = () => {
@@ -361,6 +448,7 @@
                 DOMElements.creditsBtn.addEventListener('click', () => showModal(DOMElements.creditsModal));
                 DOMElements.addAppBtn.addEventListener('click', () => showModal(DOMElements.addAppModal));
                 DOMElements.addAppForm.addEventListener('submit', handleAddApp);
+                DOMElements.aliasForm.addEventListener('submit', handleAliasSubmit);
                 
                 document.querySelectorAll('[data-modal-hide]').forEach(button => {
                     const modalId = button.getAttribute('data-modal-hide');
@@ -370,7 +458,7 @@
                     }
                 });
 
-                [DOMElements.appModal, DOMElements.creditsModal, DOMElements.addAppModal].forEach(modalEl => {
+                [DOMElements.appModal, DOMElements.creditsModal, DOMElements.addAppModal, DOMElements.aliasModal].forEach(modalEl => {
                     if (modalEl) {
                         modalEl.addEventListener('click', (event) => {
                             if (event.target === modalEl) {
