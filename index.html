@@ -214,7 +214,7 @@
                 { name: "Reputation", icon: "fa-solid fa-globe", link: "https://app.reputation.com/auth", instructions: "Use **email and password** (Unchanged after SSO Phase Out)" },
                 { name: "GraceHill", icon: "fa-solid fa-book", link: "https://www.gracehillvision.com/realsource", instructions: "Use Alias and Password <br/> <br/> Example: <br/> Username: jdoe <br/> Password: Enter Known Password" },
                 { name: "theRAP Forms", icon: "fa-solid fa-file", link: "https://realsource451.sharepoint.com/:f:/g/EtThzHeloH9Hqwl6ik0A3OUB9KBc0hBGIPicJ3Vrf-fyEg?e=TYFeyq", instructions: "Forms normally found in theRAP have been moved to SharePoint. If you are unable to find a form you need, please submit an IT ticket" },
-                { name: "Property Contacts", icon: "fa-solid fa-address-book", link: "https://realsource451.sharepoint.com/:b:/g/EQ8OHM1fawhLukJkZeDg2-oBgQZYaYNhLstfQjviVbnv0g?e=VPFRGI", requiresAuth: true },
+                { name: "Property Contacts", icon: "fa-solid fa-address-book", requiresAuth: true }, // Link removed for security
                 { name: "Support", icon: "fa-solid fa-headset", link: "https://realsource.freshdesk.com", instructions: "Enter a ticket on **Freshdesk** for all support requests." },
             ];
 
@@ -410,13 +410,17 @@
                         throw new Error('Could not fetch verification file.');
                     }
                     const csvText = await response.text();
-                    const validAliases = csvText.split('\n').map(name => name.trim().toLowerCase());
+                    const lines = csvText.split('\n').filter(line => line.trim() !== ''); // Filter out empty lines
+                    
+                    if (lines.length === 0) {
+                        throw new Error('Verification file is empty.');
+                    }
+                    
+                    const contactsLink = lines.shift().trim(); // First line is the link
+                    const validAliases = lines.map(name => name.trim().toLowerCase());
 
                     if (validAliases.includes(enteredAlias)) {
-                        const contactsApp = apps.find(app => app.requiresAuth);
-                        if(contactsApp) {
-                            window.open(contactsApp.link, '_blank');
-                        }
+                        window.open(contactsLink, '_blank');
                         hideModal(DOMElements.aliasModal);
                     } else {
                         DOMElements.aliasError.textContent = 'Invalid alias. Please try again.';
