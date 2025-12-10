@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>RealSource App Portal</title>
-    <!-- Favicon link: Using the raw GitHub path for 'thumbnail.png'-->
     <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/trevordmray/rsappslauncher/main/thumbnail.png">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
@@ -51,7 +50,6 @@
 </head>
 <body class="bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-gray-300 min-h-screen transition-colors duration-300">
 
-    <!-- Shutdown Warning Banner -->
     <div class="bg-red-600 text-white text-center px-4 py-3 shadow-md relative z-30">
         <div class="max-w-4xl mx-auto flex flex-col sm:flex-row items-center justify-center text-sm font-medium space-y-1 sm:space-y-0 sm:space-x-2">
             <span>
@@ -66,7 +64,6 @@
 
     <main class="p-4 sm:p-8 pb-24">
         <header class="max-w-4xl mx-auto mb-10 text-center">
-            <!-- RealSource Logos (Light and Dark) -->
             <img src="https://raw.githubusercontent.com/trevordmray/rsappslauncher/main/realsourcelogo.png" alt="RealSource Logo" class="mx-auto h-24 w-auto mb-4 block dark:hidden">
             <img src="https://raw.githubusercontent.com/trevordmray/rsappslauncher/main/realsourcelogorev.png" alt="RealSource Logo" class="mx-auto h-24 w-auto mb-4 hidden dark:block">
             
@@ -79,8 +76,7 @@
         </header>
 
         <div class="max-w-5xl mx-auto grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6" id="appGrid">
-            <!-- App tiles will be injected here by JavaScript -->
-        </div>
+            </div>
 
         <footer class="max-w-4xl mx-auto mt-12 text-center">
             <p class="text-xs text-gray-400 dark:text-gray-500 leading-relaxed">
@@ -89,7 +85,6 @@
         </footer>
     </main>
     
-    <!-- Footer Bar with Theme Toggle, Add App, and Credits -->
     <div class="fixed bottom-0 left-0 w-full p-2 sm:p-4 bg-gray-100/90 dark:bg-gray-900/90 backdrop-blur-sm border-t border-gray-200 dark:border-gray-700 z-40">
         <div class="max-w-5xl mx-auto flex justify-between items-center">
             <div class="flex items-center gap-x-2">
@@ -110,7 +105,6 @@
         </div>
     </div>
 
-    <!-- Application Info Modal -->
     <div id="appModal" class="fixed inset-0 bg-gray-900 bg-opacity-70 flex items-center justify-center p-4 z-50 hidden transition-opacity duration-300 ease-out opacity-0">
         <div id="appModalContent" class="bg-white dark:bg-gray-800 rounded-xl shadow-2xl w-full max-w-lg p-6 md:p-8 transform transition-transform duration-300 ease-out scale-95">
             <div class="flex justify-between items-start mb-4">
@@ -119,18 +113,14 @@
                     <i class="fas fa-times text-xl"></i>
                 </button>
             </div>
-            <!-- Instruction Box -->
             <div id="instructionBox" class="p-4 rounded-lg mb-6">
                 <p id="modalInstructions" class="text-base"></p>
             </div>
-            <!-- Continue Button (Link) -->
             <a id="modalLink" class="w-full inline-flex justify-center items-center px-6 py-3 border border-transparent text-base font-medium rounded-lg text-white bg-primary-blue hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-blue transition-all duration-150 ease-in-out">Continue to Application</a>
-            <!-- Close Button -->
             <button data-modal-hide="appModal" id="modalCloseBtn" class="w-full mt-3 px-6 py-3 text-base font-medium rounded-lg text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 focus:outline-none transition-all duration-150 ease-in-out">Understood / Close</button>
         </div>
     </div>
 
-    <!-- Add App Modal -->
     <div id="addAppModal" class="fixed inset-0 bg-gray-900 bg-opacity-70 flex items-center justify-center p-4 z-50 hidden transition-opacity duration-300 ease-out opacity-0">
         <div id="addAppModalContent" class="bg-white dark:bg-gray-800 rounded-xl shadow-2xl w-full max-w-lg p-6 md:p-8 transform transition-transform duration-300 ease-out scale-95">
             <div class="flex justify-between items-start mb-4">
@@ -158,7 +148,6 @@
         </div>
     </div>
     
-    <!-- Alias Check Modal -->
     <div id="aliasModal" class="fixed inset-0 bg-gray-900 bg-opacity-70 flex items-center justify-center p-4 z-50 hidden transition-opacity duration-300 ease-out opacity-0">
         <div id="aliasModalContent" class="bg-white dark:bg-gray-800 rounded-xl shadow-2xl w-full max-w-lg p-6 md:p-8 transform transition-transform duration-300 ease-out scale-95">
             <div class="flex justify-between items-start mb-4">
@@ -188,7 +177,6 @@
     </div>
 
 
-    <!-- Credits Modal -->
     <div id="creditsModal" class="fixed inset-0 bg-gray-900 bg-opacity-70 flex items-center justify-center p-4 z-50 hidden transition-opacity duration-300 ease-out opacity-0">
         <div id="creditsModalContent" class="bg-white dark:bg-gray-800 rounded-xl shadow-2xl w-full max-w-lg p-6 md:p-8 transform transition-transform duration-300 ease-out scale-95">
             <div class="flex justify-between items-start mb-4">
@@ -222,14 +210,14 @@
                 { name: "SharePoint", icon: "fa-brands fa-microsoft", link: "https://realsource451.sharepoint.com/", instructions: "To log in, use your **RealSource Outlook Email and Password**" },
                 { name: "EliseAI", icon: "fa-solid fa-robot", link: "https://app.meetelise.com", instructions: "Log in using your **Alias and password** (Use \"Reset Password\" to get a new password after SSO phase out)" },
                 { name: "Motivosity", icon: "fa-solid fa-gift", link: "https://www.motivosity.com/", instructions: "Enter **Alias Email (Alias@realsource.net)** and Enter Password. (Use Reset password after SSO Phase Out). (You may also request a one time code for login)." },
-                { name: "Concur Expense", icon: "fa-solid fa-credit-card", link: "https://www.concursolutions.com/", instructions: "Use **RealSource Email and Concur password** (Use Reset password after SSO Phase Out)" },
+                { name: "Concur Expense", icon: "fa-solid fa-credit-card", instructions: "**This application has been shut down.**" },
                 { name: "LRO", icon: "fa-solid fa-chart-line", link: "https://ao.realpage.com/ysconfig/app/login", instructions: "Use **email and password** (Unchanged after SSO Phase Out)" },
                 { name: "DocuVerus", icon: "fa-solid fa-file-signature", link: "https://app.dvapply.com./ats/login", instructions: "Use **email and password** (Unchanged after SSO Phase Out)" },
                 { name: "Reputation", icon: "fa-solid fa-globe", link: "https://app.reputation.com/auth", instructions: "Use **email and password** (Unchanged after SSO Phase Out)" },
-                { name: "GraceHill", icon: "fa-solid fa-book", link: "https://www.gracehillvision.com/realsource", instructions: "Use Alias and Password <br/> <br/> Example: <br/> Username: jdoe <br/> Password: Enter Known Password" },
+                { name: "GraceHill", icon: "fa-solid fa-book", instructions: "**This application has been shut down.**" },
                 { name: "theRAP Forms", icon: "fa-solid fa-file", requiresAuth: true }, // Link removed for security
                 { name: "Property Contacts", icon: "fa-solid fa-address-book", requiresAuth: true }, // Link removed for security
-                { name: "Support", icon: "fa-solid fa-headset", link: "https://realsource.freshdesk.com", instructions: "Enter a ticket on **Freshdesk** for all support requests." },
+                { name: "Support", icon: "fa-solid fa-headset", instructions: "<strong>This application has been shut down.</strong> Please contact the following people:<br><br><strong>Operations and Training Matters:</strong><br>Kim Humphery - <a href=\"mailto:kim@realsource.net\" style=\"color:blue; text-decoration:underline;\">kim@realsource.net</a> (Will respond after hours)<br><br><strong>IT, Urgent Entrata, Marketing, Corporate Clerical, and Accounting Matters:</strong><br>Trevor Ray - <a href=\"mailto:trevor@realsource.net\" style=\"color:blue; text-decoration:underline;\">trevor@realsource.net</a><br><br><strong>Accounting:</strong><br>Sam Christian - <a href=\"mailto:sam@realsource.net\" style=\"color:blue; text-decoration:underline;\">sam@realsource.net</a> (Will respond after hours)<br><br><strong>Entrata:</strong><br>Jennifer Harris - <a href=\"mailto:jennifer@realsource.net\" style=\"color:blue; text-decoration:underline;\">jennifer@realsource.net</a> (Will respond after hours)<br><br><strong>HR:</strong><br>Kim Baker - <a href=\"mailto:kbaker@realsource.net\" style=\"color:blue; text-decoration:underline;\">kbaker@realsource.net</a>" },
             ];
 
             // --- 2. DOM ELEMENT SELECTIONS (Consolidated) ---
